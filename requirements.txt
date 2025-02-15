@@ -1,0 +1,8 @@
+#Python Version 3.13
+matplotlib
+numpy
+pytz
+plotly
+pandas
+tensorflow
+scikit-learn
