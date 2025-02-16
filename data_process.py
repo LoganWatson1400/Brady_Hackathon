@@ -10,6 +10,7 @@ DATA_PATH = g.DATA
 
 # Parameters
 allowed_formats = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
+image_size_limit = 224 # this can be tweaked
 
 # Load images manually
 def load_images(dir):
@@ -32,7 +33,7 @@ def load_images(dir):
 def load_and_preprocess_image(path):
     image = tf.io.read_file(path)
     image = tf.image.decode_image(image, channels=3)
-    image = tf.image.resize(image, [224, 224])  # Resize to a fixed size
+    image = tf.image.resize(image, [image_size_limit, image_size_limit])  # Resize to a fixed size
     image = image / 255.0  # Normalize to [0, 1]
     return image
 
