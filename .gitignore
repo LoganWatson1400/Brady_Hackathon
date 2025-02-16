@@ -1,0 +1,9 @@
+# dont delete any, just add what you want to ignore
+# NOTE: any data files should be added to the .gitignore file
+Brady_Hackathon.code-workspace
+bradly_data.zip
+data
+data2
+standards
+__pycache__
+display_images.py
