@@ -64,4 +64,4 @@ def prepare_data():
     # Split data into training and validation sets
     train_data, val_data, train_targets, val_targets = train_test_split(data, targets, test_size=0.2, random_state=42)
 
-    return train_data, train_targets, val_data, val_targets
+    return train_data, val_data, train_targets, val_targets
