@@ -8,8 +8,10 @@ images.
 [Brady Corporation: AI for Workplace Safety Hackathon](https://uwm.edu/csi/workforce-innovation/csi-spring-2025-hackathon/)\
 Hosted by the Connected Systems Institute, UW-Milwaukee
 
-
 ## Contributors
+Alex Jones\
+Akash Reddy Jammula\
+Gurleen Singh\
 Logan Watson\
 Patrick "Jack" Harmer
 
