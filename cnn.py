@@ -4,8 +4,7 @@ from data_process import prepare_data
 import make_model
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score, roc_curve, f1_score
-# import seaborn as sns
+from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score, roc_curve
 
 ## variables ##
 epochs = 1
@@ -13,11 +12,9 @@ batch_size = 32
 ###############
 
 x_train, x_test, y_train, y_test = prepare_data()
+model = make_model.make_model()
 if os.path.exists('model.h5'):# TODO change the method name to match the actual method name
-    model = make_model.make_model()
     model.load_weights('model.h5')
-else:
-    model = make_model.make_model() 
 model.summary()
 
 # Train the model
@@ -43,6 +40,8 @@ model.save('model.h5')
 y_pred = model.predict(x_test)
 y_pred_classes = np.argmax(y_pred, axis=1)
 
+####### Evaluation Math #######
+
 # Accuracy
 accuracy = accuracy_score(y_test, y_pred_classes)
 print(f'Accuracy: {accuracy}')
@@ -58,6 +57,8 @@ print(f'Recall: {recall}')
 # AUC
 auc = roc_auc_score(y_test, y_pred)
 print(f'AUC: {auc}')
+
+####### Plotting #######
 
 # Create subplots
 fig, axs = plt.subplots(1, 3, figsize=(20, 5))
