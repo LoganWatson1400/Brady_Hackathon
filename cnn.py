@@ -8,11 +8,16 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_a
 # import seaborn as sns
 
 ## variables ##
-epochs = 10
+epochs = 1
 batch_size = 32
+###############
 
 x_train, x_test, y_train, y_test = prepare_data()
-model = make_model.make_model() # TODO change the method name to match the actual method name
+if os.path.exists('model.h5'):# TODO change the method name to match the actual method name
+    model = make_model.make_model()
+    model.load_weights('model.h5')
+else:
+    model = make_model.make_model() 
 model.summary()
 
 # Train the model
@@ -53,3 +58,40 @@ print(f'Recall: {recall}')
 # AUC
 auc = roc_auc_score(y_test, y_pred)
 print(f'AUC: {auc}')
+
+# Create subplots
+fig, axs = plt.subplots(1, 3, figsize=(20, 5))
+
+# ROC curve
+fpr, tpr, _ = roc_curve(y_test, y_pred)
+axs[0].plot(fpr, tpr, label='ROC curve (area = %0.2f)' % auc)
+axs[0].plot([0, 1], [0, 1], 'k--')
+axs[0].set_xlim([0.0, 1.0])
+axs[0].set_ylim([0.0, 1.05])
+axs[0].set_xlabel('False Positive Rate')
+axs[0].set_ylabel('True Positive Rate')
+axs[0].set_title('Receiver Operating Characteristic')
+axs[0].legend(loc="lower right")
+
+# Loss
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+axs[1].plot(loss, label='Training Loss')
+axs[1].plot(val_loss, label='Validation Loss')
+axs[1].set_title('Loss')
+axs[1].set_xlabel('Epochs')
+axs[1].set_ylabel('Loss')
+axs[1].legend()
+
+# Learning curve
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+axs[2].plot(acc, label='Training Accuracy')
+axs[2].plot(val_acc, label='Validation Accuracy')
+axs[2].set_title('Learning Curve')
+axs[2].set_xlabel('Epochs')
+axs[2].set_ylabel('Accuracy')
+axs[2].legend()
+
+plt.tight_layout()
+plt.show()

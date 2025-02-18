@@ -6,3 +6,5 @@ data
 data2
 standards
 __pycache__
+history.pkl
+model.h5
