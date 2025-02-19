@@ -6,3 +6,4 @@ data
 data2
 standards
 __pycache__
+.DS_Store
