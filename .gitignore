@@ -7,3 +7,5 @@ data2
 standards
 __pycache__
 .DS_Store
+model.h5
+model.keras
