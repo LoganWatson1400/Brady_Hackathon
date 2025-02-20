@@ -61,7 +61,7 @@ def prepare_data():
         if not os.path.isdir(title_path):
             continue
 
-        print(f"Processing title: {title}")
+        # print(f"Processing title: {title}")
         paths, lbls = get_paths(title_path, title, title_index)
         data_paths.extend(paths)
         targets.extend(lbls)
