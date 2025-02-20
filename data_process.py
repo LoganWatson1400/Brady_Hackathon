@@ -40,9 +40,13 @@ def get_paths(dir, title, title_index):
 def pre_process(path):
     image = tf.io.read_file(path)
     image = tf.image.decode_image(image, channels=3)
-    image = tf.image.resize(image, [image_size_limit, image_size_limit])  # Resize to a fixed size
+    image = resize_image(image)
     image = image / 255.0  # Normalize to [0, 1]
     return image
+
+def resize_image(image):
+    image = tf.image.resize(image, [image_size_limit, image_size_limit])
+    return image.numpy()
 
 # Process all folders under the data directory
 def prepare_data():
@@ -69,6 +73,7 @@ def prepare_data():
         # Augment the data
         for _ in range(augs):  # Create augs augmented copies
             augmented_image = data_augment.augment_image(image.numpy())
+            augmented_image = resize_image(augmented_image)  # Ensure the augmented image is resized
             
             # Convert augmented image to displayable format
             # display_image = (augmented_image * 255).astype(np.uint8)
