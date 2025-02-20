@@ -30,9 +30,12 @@ def get_paths(dir, title, title_index):
             if img_file.lower().endswith(FORMATS):
                 img_path = os.path.join(x_dir, img_file)
                 image_paths.append(img_path)
-                label = [0] * 6  # One-hot encode the title
-                label[title_index] = 1
-                label.append(0 if x == 'Before' else 1)  # Add binary label for Before/After
+                if x == 'After':
+                    label = [1] + [0] * 6  # No violation for "After" images
+                else:
+                    label = [0] * 6  # One-hot encode the title
+                    label[title_index] = 1
+                    label.append(0)  # Add binary label for Before/After
                 labels.append(label)
     return image_paths, labels
 
