@@ -16,21 +16,17 @@ image_size_limit = 224 # this can be tweaked
 def load_images(dir):
     image_paths = []
     labels = []
-
-    violation_mapping = {
-        'No Violation': 0,
-        'ANSI A13.1 (Pipe Marking)': 1,
-        # Add other violations here
-    }
-    for violation in violation_mapping.keys():
-        violation_dir = os.path.join(dir, violation)
-        if not os.path.exists(violation_dir):
+    # Before = before violation fix
+    # After = after violation fix
+    for x in ['Before', 'After']:
+        x_dir = os.path.join(dir, x)
+        if not os.path.exists(x_dir):
             continue
-        for img_file in os.listdir(violation_dir):
+        for img_file in os.listdir(x_dir):
             if img_file.lower().endswith(allowed_formats):
-                img_path = os.path.join(violation_dir, img_file)
+                img_path = os.path.join(x_dir, img_file)
                 image_paths.append(img_path)
-                labels.append(violation_mapping[violation])
+                labels.append(0 if x == 'Before' else 1)  # Convert labels to binary
     return image_paths, labels
 
 # Load and preprocess images
@@ -65,9 +61,6 @@ def prepare_data():
     np.random.shuffle(indices)
     data = data[indices]
     targets = targets[indices]
-
-    # Convert targets to categorical
-    targets = tf.keras.utils.to_categorical(targets, num_classes=7)
 
     # Split data into training and validation sets
     train_data, val_data, train_targets, val_targets = train_test_split(data, targets, test_size=0.2, random_state=42)
