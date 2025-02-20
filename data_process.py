@@ -4,18 +4,18 @@ import tensorflow as tf
 import global_paths as g
 from sklearn.model_selection import train_test_split
 import numpy as np
-import data_augment  # Import the data augmentation module
-import display_images
+import data_augment
+
 
 
 ## paths ##
 DATA_PATH = g.DATA
 ## constants ##
 VIOLATIONS = g.VIOLATIONS
-augs = 10  # Number of augmented copies to create for each image
+FORMATS = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
 
 # Parameters
-allowed_formats = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
+augs = 10  # Number of augmented copies to create for each image
 image_size_limit = 224 # this can be tweaked
 
 # Load images manually
@@ -27,7 +27,7 @@ def get_paths(dir, title, title_index):
         if not os.path.exists(x_dir):
             continue
         for img_file in os.listdir(x_dir):
-            if img_file.lower().endswith(allowed_formats):
+            if img_file.lower().endswith(FORMATS):
                 img_path = os.path.join(x_dir, img_file)
                 image_paths.append(img_path)
                 label = [0] * 6  # One-hot encode the title

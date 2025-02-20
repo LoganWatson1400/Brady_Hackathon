@@ -4,12 +4,10 @@ import make_model
 import pickle
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, classification_report, precision_score, recall_score, roc_auc_score, roc_curve, f1_score
-import tensorflow as tf
-import numpy as np
 import global_paths as g
 
 ## variables ##
-epochs = 20
+epochs = 5
 batch_size = 64
 ###############
 
