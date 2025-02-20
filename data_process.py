@@ -20,15 +20,16 @@ def get_paths(dir, title, title_index):
     for x in ['Before', 'After']:
         x_dir = os.path.join(dir, x)
         if not os.path.exists(x_dir):
+
             continue
-        for img_file in os.listdir(x_dir):
+        for img_file in os.listdir(violation_dir):
             if img_file.lower().endswith(allowed_formats):
-                img_path = os.path.join(x_dir, img_file)
+                img_path = os.path.join(violation_dir, img_file)
                 image_paths.append(img_path)
                 label = [0] * 6  # One-hot encode the title
                 label[title_index] = 1
                 label.append(0 if x == 'Before' else 1)  # Add binary label for Before/After
-                labels.append(label)
+
     return image_paths, labels
 
 # Load and preprocess images
@@ -69,6 +70,9 @@ def prepare_data():
     np.random.shuffle(indices)
     data = data[indices]
     targets = targets[indices]
+
+    # Convert targets to categorical
+    targets = tf.keras.utils.to_categorical(targets, num_classes=7)
 
     # Split data into training and validation sets
     x_train, x_test, y_train, y_test = train_test_split(data, targets, test_size=0.2, random_state=42)
