@@ -6,3 +6,6 @@ data
 data2
 standards
 __pycache__
+history.pkl
+model.h5
+my_model.keras
