@@ -4,6 +4,7 @@ import make_model
 import pickle
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, classification_report, precision_score, recall_score, roc_auc_score, roc_curve, f1_score
+import tensorflow as tf
 import global_paths as g
 
 ## variables ##
@@ -18,12 +19,20 @@ if os.path.exists('my_model.keras'):
     model.load_weights('my_model.keras')
 model.summary()
 
+# Add EarlyStopping callback
+early_stopping = tf.keras.callbacks.EarlyStopping(
+    monitor='val_loss', 
+    patience=10, 
+    restore_best_weights=True
+)
+
 # Train the model
 history = model.fit(
     x_train, y_train, 
     epochs=epochs, 
     batch_size=batch_size, 
-    validation_data=(x_test, y_test)
+    validation_data=(x_test, y_test),
+    callbacks=[early_stopping]
 )
 
 if os.path.exists('history.pkl'):
