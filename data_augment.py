@@ -25,9 +25,10 @@ def crop_image(image, crop_size):
     return cropped_image
 
 def adjust_color(image, alpha, beta):
-    # Adjust the color of the image
-    adjusted_image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
-    return adjusted_image
+    # Manually adjust the color of the image
+    image = image * alpha + beta
+    image = np.clip(image, 0, 1)  # Ensure the values are within [0, 1]
+    return image
 
 def augment_image(image):
     # Apply a series of augmentations to the image
@@ -35,8 +36,8 @@ def augment_image(image):
     x_offset = random.randint(-10, 10)
     y_offset = random.randint(-10, 10)
     crop_size = (random.randint(50, 100), random.randint(50, 100))
-    alpha = random.uniform(0.8, 1.2)
-    beta = random.randint(-10, 10)
+    alpha = random.uniform(0.2, 2.5)
+    beta = random.uniform(-0.4, 0.4)
     
     image = rotate_image(image, angle)
     image = offset_image(image, x_offset, y_offset)

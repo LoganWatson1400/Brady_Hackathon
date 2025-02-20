@@ -1,10 +1,12 @@
 import os
+from matplotlib import pyplot as plt
 import tensorflow as tf
 import global_paths as g
 from sklearn.model_selection import train_test_split
 import numpy as np
 import data_augment  # Import the data augmentation module
 import display_images
+
 
 ## paths ##
 DATA_PATH = g.DATA
@@ -67,7 +69,11 @@ def prepare_data():
         # Augment the data
         for _ in range(augs):  # Create augs augmented copies
             augmented_image = data_augment.augment_image(image.numpy())
-            display_images.display(augmented_image)
+            
+            # Convert augmented image to displayable format
+            # display_image = (augmented_image * 255).astype(np.uint8)
+            # display_images.display_image(display_image)
+
             data.append(augmented_image)
             new_targets.append(target)
 
