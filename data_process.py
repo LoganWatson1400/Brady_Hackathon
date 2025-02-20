@@ -68,11 +68,11 @@ def prepare_data():
     new_targets = []
     for path, target in zip(data_paths, targets):
         image = pre_process(path)
-        data.append(image.numpy())
+        data.append(image)
         new_targets.append(target)
         # Augment the data
         for _ in range(augs):  # Create augs augmented copies
-            augmented_image = data_augment.augment_image(image.numpy())
+            augmented_image = data_augment.augment_image(image)
             augmented_image = resize_image(augmented_image)  # Ensure the augmented image is resized
             
             # Convert augmented image to displayable format
