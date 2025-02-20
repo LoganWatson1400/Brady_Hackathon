@@ -3,13 +3,13 @@ from data_process import prepare_data
 import make_model
 import pickle
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score, classification_report, precision_score, recall_score, roc_auc_score, roc_curve
+from sklearn.metrics import accuracy_score, classification_report, precision_score, recall_score, roc_auc_score, roc_curve, f1_score
 import tensorflow as tf
 import numpy as np
 import global_paths as g
 
 ## variables ##
-epochs = 5
+epochs = 2
 batch_size = 64
 ###############
 
@@ -39,6 +39,9 @@ with open('history.pkl', 'wb') as f:
     pickle.dump(history.history, f)
 model.save('my_model.keras')
 
+# Ensure labels are correctly encoded
+y_test_labels = y_test.argmax(axis=1)
+
 # Evaluate the model
 y_pred = model.predict(x_test)
 y_pred_classes = y_pred.argmax(axis=1)  # Convert probabilities to class labels
@@ -46,19 +49,23 @@ y_pred_classes = y_pred.argmax(axis=1)  # Convert probabilities to class labels
 ####### Evaluation Math #######
 # Classification Report
 print("\nClassification Report:")
-print(classification_report(y_test.argmax(axis=1), y_pred_classes, target_names=list(g.VIOLATIONS.keys())))
+print(classification_report(y_test_labels, y_pred_classes, target_names=list(g.VIOLATIONS.keys()), zero_division=1))
 
 # Accuracy
-accuracy = accuracy_score(y_test.argmax(axis=1), y_pred_classes)
+accuracy = accuracy_score(y_test_labels, y_pred_classes)
 print(f'Accuracy: {accuracy}')
 
 # Precision
-precision = precision_score(y_test.argmax(axis=1), y_pred_classes, average='weighted')
+precision = precision_score(y_test_labels, y_pred_classes, average='weighted', zero_division=1)
 print(f'Precision: {precision}')
 
 # Recall
-recall = recall_score(y_test.argmax(axis=1), y_pred_classes, average='weighted')
+recall = recall_score(y_test_labels, y_pred_classes, average='weighted', zero_division=1)
 print(f'Recall: {recall}')
+
+# F1 Score
+f1 = f1_score(y_test_labels, y_pred_classes, average='weighted', zero_division=1)
+print(f'F1 Score: {f1}')
 
 # AUC
 auc = roc_auc_score(y_test, y_pred, multi_class='ovr')
