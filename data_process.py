@@ -3,11 +3,14 @@ import tensorflow as tf
 import global_paths as g
 from sklearn.model_selection import train_test_split
 import numpy as np
+import data_augment  # Import the data augmentation module
+import display_images
 
 ## paths ##
 DATA_PATH = g.DATA
 ## constants ##
 VIOLATIONS = g.VIOLATIONS
+augs = 10  # Number of augmented copies to create for each image
 
 # Parameters
 allowed_formats = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
@@ -56,13 +59,20 @@ def prepare_data():
 
     # Load and preprocess images
     data = []
-    for path, label in zip(data_paths, targets):
+    new_targets = []
+    for path, target in zip(data_paths, targets):
         image = pre_process(path)
-        data.append(image.numpy())  # Convert Tensor to NumPy array
+        data.append(image.numpy())
+        new_targets.append(target)
         # Augment the data
+        for _ in range(augs):  # Create augs augmented copies
+            augmented_image = data_augment.augment_image(image.numpy())
+            display_images.display(augmented_image)
+            data.append(augmented_image)
+            new_targets.append(target)
 
     data = np.array(data)
-    targets = np.array(targets)
+    targets = np.array(new_targets)
 
     # Shuffle data
     indices = np.arange(len(data))
