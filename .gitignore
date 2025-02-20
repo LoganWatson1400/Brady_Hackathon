@@ -6,6 +6,8 @@ data
 data2
 standards
 __pycache__
-history.pkl
+.DS_Store
 model.h5
+model.keras
+history.pkl
 my_model.keras
