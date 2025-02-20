@@ -4,6 +4,9 @@ import make_model
 import pickle
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, classification_report, precision_score, recall_score, roc_auc_score, roc_curve
+import tensorflow as tf
+import numpy as np
+import global_paths as g
 
 ## variables ##
 epochs = 5
@@ -11,6 +14,7 @@ batch_size = 64
 ###############
 
 x_train, x_test, y_train, y_test = prepare_data()
+
 model = make_model.build_xception_model()
 if os.path.exists('my_model.keras'):
     model.load_weights('my_model.keras')
@@ -37,27 +41,27 @@ model.save('my_model.keras')
 
 # Evaluate the model
 y_pred = model.predict(x_test)
-y_pred_classes = (y_pred > 0.5).astype(int)  # Convert probabilities to class labels
+y_pred_classes = y_pred.argmax(axis=1)  # Convert probabilities to class labels
 
 ####### Evaluation Math #######
 # Classification Report
 print("\nClassification Report:")
-print(classification_report(y_test, y_pred_classes, target_names=["Before (Non-Compliant)", "After (Compliant)"]))
+print(classification_report(y_test.argmax(axis=1), y_pred_classes, target_names=list(g.VIOLATIONS.keys())))
 
 # Accuracy
-accuracy = accuracy_score(y_test, y_pred_classes)
+accuracy = accuracy_score(y_test.argmax(axis=1), y_pred_classes)
 print(f'Accuracy: {accuracy}')
 
 # Precision
-precision = precision_score(y_test, y_pred_classes)
+precision = precision_score(y_test.argmax(axis=1), y_pred_classes, average='weighted')
 print(f'Precision: {precision}')
 
 # Recall
-recall = recall_score(y_test, y_pred_classes)
+recall = recall_score(y_test.argmax(axis=1), y_pred_classes, average='weighted')
 print(f'Recall: {recall}')
 
 # AUC
-auc = roc_auc_score(y_test, y_pred)
+auc = roc_auc_score(y_test, y_pred, multi_class='ovr')
 print(f'AUC: {auc}')
 
 ####### Plotting #######
@@ -66,7 +70,7 @@ print(f'AUC: {auc}')
 fig, axs = plt.subplots(1, 3, figsize=(20, 5))
 
 # ROC curve
-fpr, tpr, _ = roc_curve(y_test, y_pred)
+fpr, tpr, _ = roc_curve(y_test.ravel(), y_pred.ravel())
 axs[0].plot(fpr, tpr, label='ROC curve (area = %0.2f)' % auc)
 axs[0].plot([0, 1], [0, 1], 'k--')
 axs[0].set_xlim([0.0, 1.0])
