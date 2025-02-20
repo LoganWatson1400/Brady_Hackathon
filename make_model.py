@@ -1,3 +1,4 @@
+
 import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import GlobalAveragePooling2D, Dense, Dropout
@@ -58,4 +59,3 @@ y_pred = (y_pred_probs > 0.5).astype("int32")
 # Classification Report
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred, target_names=["Before (Non-Compliant)", "After (Compliant)"]))
-
