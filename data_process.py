@@ -66,6 +66,14 @@ def prepare_data():
     targets = tf.keras.utils.to_categorical(targets, num_classes=7)
 
     # Split data into training and validation sets
-    train_data, val_data, train_targets, val_targets = train_test_split(data, targets, test_size=0.2, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(data, targets, test_size=0.2, random_state=42)
 
-    return train_data, val_data, train_targets, val_targets
+    return x_train, x_test, y_train, y_test
+
+
+_, _, _, y_test = prepare_data()
+
+
+print(f"Testing labels shape: {y_test.shape}")
+
+print(y_test[0])

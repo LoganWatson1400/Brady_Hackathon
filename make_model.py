@@ -3,6 +3,8 @@ from data_process import prepare_data
 
 ### Parameters ###
 lr = 0.0001
+dropout = 0.5
+##################
 
 
 # Load dataset
@@ -17,7 +19,7 @@ def build_xception_model():
         base_model,
         tf.keras.laysers.GlobalAveragePooling2D(),
         tf.keras.laysers.Dense(128, activation='relu'),
-        tf.keras.laysers.Dropout(0.5),  # Reduce overfit
+        tf.keras.laysers.Dropout(dropout),  # Reduce overfit
         tf.keras.laysers.Dense(7, activation='softmax')
     ])
 
