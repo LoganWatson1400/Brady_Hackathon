@@ -1,20 +1,19 @@
 import os
-import pickle
 from data_process import prepare_data
 import make_model
-import numpy as np
+import pickle
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score, roc_curve
+from sklearn.metrics import accuracy_score, classification_report, precision_score, recall_score, roc_auc_score, roc_curve
 
 ## variables ##
-epochs = 1
-batch_size = 32
+epochs = 5
+batch_size = 64
 ###############
 
 x_train, x_test, y_train, y_test = prepare_data()
-model = make_model.make_model()
-if os.path.exists('model.h5'):# TODO change the method name to match the actual method name
-    model.load_weights('model.h5')
+model = make_model.build_xception_model()
+if os.path.exists('my_model.keras'):
+    model.load_weights('my_model.keras')
 model.summary()
 
 # Train the model
@@ -34,13 +33,16 @@ if os.path.exists('history.pkl'):
 # Save the history & model
 with open('history.pkl', 'wb') as f:
     pickle.dump(history.history, f)
-model.save('model.h5')
+model.save('my_model.keras')
 
 # Evaluate the model
 y_pred = model.predict(x_test)
-y_pred_classes = np.argmax(y_pred, axis=1)
+y_pred_classes = (y_pred > 0.5).astype(int)  # Convert probabilities to class labels
 
 ####### Evaluation Math #######
+# Classification Report
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred_classes, target_names=["Before (Non-Compliant)", "After (Compliant)"]))
 
 # Accuracy
 accuracy = accuracy_score(y_test, y_pred_classes)
