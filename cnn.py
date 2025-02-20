@@ -9,7 +9,7 @@ import numpy as np
 import global_paths as g
 
 ## variables ##
-epochs = 2
+epochs = 20
 batch_size = 64
 ###############
 
