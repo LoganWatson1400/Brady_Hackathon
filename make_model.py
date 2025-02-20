@@ -17,10 +17,10 @@ def build_xception_model():
 
     model = tf.keras.models.Sequential([
         base_model,
-        tf.keras.laysers.GlobalAveragePooling2D(),
-        tf.keras.laysers.Dense(128, activation='relu'),
-        tf.keras.laysers.Dropout(dropout),  # Reduce overfit
-        tf.keras.laysers.Dense(7, activation='softmax')
+        tf.keras.layers.GlobalAveragePooling2D(),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dropout(dropout),  # Reduce overfit
+        tf.keras.layers.Dense(7, activation='softmax')
     ])
 
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss="categorical_crossentropy", metrics=["accuracy"])
