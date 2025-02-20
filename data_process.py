@@ -1,5 +1,5 @@
 import os
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 import tensorflow as tf
 import global_paths as g
 from sklearn.model_selection import train_test_split

@@ -8,8 +8,9 @@ import tensorflow as tf
 import global_paths as g
 
 ## variables ##
-epochs = 5
+epochs = 10000
 batch_size = 64
+patience = 5
 ###############
 
 x_train, x_test, y_train, y_test = prepare_data()
@@ -19,12 +20,21 @@ if os.path.exists('my_model.keras'):
     model.load_weights('my_model.keras')
 model.summary()
 
-# Add EarlyStopping callback
+class CustomSaver(tf.keras.callbacks.Callback):
+    def on_epoch_end(self, epoch, logs=None):
+        if (epoch + 1) % 10 == 0:
+            self.model.save('my_model_backup.keras')
+            with open('history_backup.pkl', 'wb') as f:
+                pickle.dump(self.model.history.history, f)
+            print("Backup Saved")
+
+# Add EarlyStopping and CustomSaver callbacks
 early_stopping = tf.keras.callbacks.EarlyStopping(
     monitor='val_loss', 
-    patience=10, 
+    patience=patience, 
     restore_best_weights=True
 )
+custom_saver = CustomSaver()
 
 # Train the model
 history = model.fit(
@@ -32,7 +42,7 @@ history = model.fit(
     epochs=epochs, 
     batch_size=batch_size, 
     validation_data=(x_test, y_test),
-    callbacks=[early_stopping]
+    callbacks=[early_stopping, custom_saver]
 )
 
 if os.path.exists('history.pkl'):
