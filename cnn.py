@@ -8,6 +8,7 @@ import tensorflow as tf
 import global_paths as g
 
 ## variables ##
+violations = g.VIOLATIONS
 epochs = 10000
 batch_size = 64
 patience = 5
@@ -15,18 +16,19 @@ patience = 5
 
 x_train, x_test, y_train, y_test = prepare_data()
 
-model = make_model.build_xception_model()
-if os.path.exists('my_model.keras'):
-    model.load_weights('my_model.keras')
+model_path = 'my_model.keras'
+if os.path.exists(model_path):
+    model = tf.keras.models.load_model(model_path)
+else:
+    model = make_model.build_xception_model()
 model.summary()
 
 class CustomSaver(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs=None):
         if (epoch + 1) % 10 == 0:
-            self.model.save('my_model_backup.keras')
+            self.model.save('my_model_backup.keras', overwrite=True)
             with open('history_backup.pkl', 'wb') as f:
                 pickle.dump(self.model.history.history, f)
-            print("Backup Saved")
 
 # Add EarlyStopping and CustomSaver callbacks
 early_stopping = tf.keras.callbacks.EarlyStopping(
@@ -65,8 +67,9 @@ y_pred_classes = y_pred.argmax(axis=1)  # Convert probabilities to class labels
 
 ####### Evaluation Math #######
 # Classification Report
+labels = list(range(len(violations)))  # Ensure labels match the number of classes
 print("\nClassification Report:")
-print(classification_report(y_test_labels, y_pred_classes, target_names=list(g.VIOLATIONS.keys()), zero_division=1))
+print(classification_report(y_test_labels, y_pred_classes, target_names=list(violations.keys()), labels=labels, zero_division=1))
 
 # Accuracy
 accuracy = accuracy_score(y_test_labels, y_pred_classes)
