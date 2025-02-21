@@ -20,6 +20,7 @@ def evaluate_model(model, x_test, y_test):
     y_test_labels = y_test.argmax(axis=1)
     y_pred = model.predict(x_test)
     y_pred_classes = y_pred.argmax(axis=1)  # Convert probabilities to class labels
+    target_names = ["No Violation"] + violations
 
     # Debug: Check the distribution of classes in the test set
     unique_test_classes, test_class_counts = np.unique(y_test_labels, return_counts=True)
@@ -28,7 +29,7 @@ def evaluate_model(model, x_test, y_test):
 
     labels = list(range(len(violations)))  # Ensure labels match the number of classes
     print("\nClassification Report:")
-    print(classification_report(y_test_labels, y_pred_classes, target_names=list(violations), labels=labels, zero_division=1))
+    print(classification_report(y_test_labels, y_pred_classes, target_names=target_names, labels=labels, zero_division=1))
 
     accuracy = accuracy_score(y_test_labels, y_pred_classes)
     print(f'Accuracy: {accuracy}')

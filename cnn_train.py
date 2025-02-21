@@ -9,7 +9,7 @@ import global_paths as g
 
 ## variables ##
 violations = g.VIOLATIONS
-epochs = 3
+epochs = 20
 batch_size = 64
 patience = 5
 ###############

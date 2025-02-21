@@ -25,6 +25,9 @@ history_path = 'history.pkl'
 
 model, history = load_model_and_history(model_path, history_path)
 
-y_pred, accuracy, precision, recall, f1, auc = evaluate_model(model, x_test, y_test)
-plot_metrics(history, y_test, y_pred, auc)
+# Evaluate the model
+y_pred, accuracy, precision, recall, f1 = evaluate_model(model, x_test, y_test)
+
+# Plot metrics
+plot_metrics(history, y_test, y_pred)
 
