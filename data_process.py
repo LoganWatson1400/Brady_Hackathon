@@ -10,7 +10,7 @@ DATA_PATH = g.DATA
 VIOLATIONS = g.VIOLATIONS
 FORMATS = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
 IMAGE_SIZE_LIMIT = 224  # This can be tweaked
-AUGS = 10  # Number of augmented copies to create for each image
+AUGS = 0  # Number of augmented copies to create for each image
 
 def load_images(dir, title_index):
     """
