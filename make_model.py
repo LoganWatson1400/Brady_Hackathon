@@ -13,12 +13,14 @@ x_train, x_test, y_train, y_test = prepare_data()
 # Define augmentation layers
 data_augmentation = tf.keras.Sequential([
     tf.keras.layers.RandomFlip("horizontal"),
-    tf.keras.layers.RandomRotation(0.2),
+    tf.keras.layers.RandomFlip("vertical"),
     tf.keras.layers.RandomZoom(0.2),
-    tf.keras.layers.RandomTranslation(0.1, 0.1),
+    tf.keras.layers.RandomTranslation(0.05, 0.05),
     tf.keras.layers.RandomCrop(224, 224),
-    tf.keras.layers.RandomHeight(0.2),
-    tf.keras.layers.RandomWidth(0.2),
+    tf.keras.layers.RandomHeight(0.1), 
+    tf.keras.layers.RandomWidth(0.1),
+    tf.keras.layers.RandomContrast(.5),    # Further reduced contrast range
+    tf.keras.layers.RandomHue(0.2),         # Further reduced hue range
 ])
 
 # Function to visualize augmented images
@@ -33,7 +35,7 @@ def visualize_augmentation(data_augmentation, x_train):
     plt.show()
 
 # Visualize the augmented images
-# visualize_augmentation(data_augmentation, x_train)
+visualize_augmentation(data_augmentation, x_train)
 
 # Define the Xception-based CNN Model
 def build_xception_model():
@@ -41,9 +43,9 @@ def build_xception_model():
     base_model.trainable = False  # Freeze base 
 
     model = tf.keras.models.Sequential([
-        tf.keras.layers.InputLayer(input_shape=(224, 224, 3)),
-        data_augmentation,  # Augmentations happen inside the model
+        # tf.keras.layers.InputLayer(input_shape=(224, 224, 3)),
         base_model,
+        data_augmentation,  # Augmentations happen inside the model
         tf.keras.layers.GlobalAveragePooling2D(),
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dropout(dropout),  # Reduce overfit
