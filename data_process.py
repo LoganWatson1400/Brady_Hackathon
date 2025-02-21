@@ -1,25 +1,21 @@
 import os
-# from matplotlib import pyplot as plt
 import tensorflow as tf
 import global_paths as g
 from sklearn.model_selection import train_test_split
 import numpy as np
 import data_augment
 
-
-
-## paths ##
+## Constants ##
 DATA_PATH = g.DATA
-## constants ##
 VIOLATIONS = g.VIOLATIONS
 FORMATS = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
+IMAGE_SIZE_LIMIT = 224  # This can be tweaked
+AUGS = 10  # Number of augmented copies to create for each image
 
-# Parameters
-augs = 10  # Number of augmented copies to create for each image
-image_size_limit = 224 # this can be tweaked
-
-# Load images manually
-def get_paths(dir, title, title_index):
+def load_images(dir, title_index):
+    """
+    Load image paths and labels from the specified directory.
+    """
     image_paths = []
     labels = []
     for x in ['Before', 'After']:
@@ -30,58 +26,45 @@ def get_paths(dir, title, title_index):
             if img_file.lower().endswith(FORMATS):
                 img_path = os.path.join(x_dir, img_file)
                 image_paths.append(img_path)
+                label = [0] * 7
                 if x == 'After':
-                    label = [1] + [0] * 6  # No violation for "After" images
+                    label[0] = 1  # No violation for "After" images
                 else:
-                    label = [0] * 6  # One-hot encode the title
-                    label[title_index] = 1
-                    label.append(0)  # Add binary label for Before/After
+                    label[title_index] = 1  # One-hot encode the title
                 labels.append(label)
     return image_paths, labels
 
-# Load and preprocess images
-def pre_process(path):
+def preprocess_image(path):
+    """
+    Load and preprocess the image.
+    """
     image = tf.io.read_file(path)
     image = tf.image.decode_image(image, channels=3)
-    image = resize_image(image)
+    image = tf.image.resize(image, [IMAGE_SIZE_LIMIT, IMAGE_SIZE_LIMIT])
     image = image / 255.0  # Normalize to [0, 1]
-    return image
-
-def resize_image(image):
-    image = tf.image.resize(image, [image_size_limit, image_size_limit])
     return image.numpy()
 
-# Process all folders under the data directory
 def prepare_data():
-    data_paths = []
-    targets = []
-    titles = os.listdir(DATA_PATH)
-    for title_index, title in enumerate(titles):
+    """
+    Process all folders under the data directory and prepare the dataset.
+    """
+    data_paths, targets = [], []
+    for i, title in enumerate(VIOLATIONS):
         title_path = os.path.join(DATA_PATH, title)
-        if not os.path.isdir(title_path):
-            continue
-
-        # print(f"Processing title: {title}")
-        paths, lbls = get_paths(title_path, title, title_index)
+        paths, lbls = load_images(title_path, i+1)
         data_paths.extend(paths)
         targets.extend(lbls)
 
     # Load and preprocess images
-    data = []
-    new_targets = []
+    data, new_targets = [], []
     for path, target in zip(data_paths, targets):
-        image = pre_process(path)
+        image = preprocess_image(path)
         data.append(image)
         new_targets.append(target)
         # Augment the data
-        for _ in range(augs):  # Create augs augmented copies
+        for _ in range(AUGS):
             augmented_image = data_augment.augment_image(image)
-            augmented_image = resize_image(augmented_image)  # Ensure the augmented image is resized
-            
-            # Convert augmented image to displayable format
-            # display_image = (augmented_image * 255).astype(np.uint8)
-            # display_images.display_image(display_image)
-
+            augmented_image = tf.image.resize(augmented_image, [IMAGE_SIZE_LIMIT, IMAGE_SIZE_LIMIT]).numpy()
             data.append(augmented_image)
             new_targets.append(target)
 
@@ -91,10 +74,7 @@ def prepare_data():
     # Shuffle data
     indices = np.arange(len(data))
     np.random.shuffle(indices)
-    data = data[indices]
-    targets = targets[indices]
+    data, targets = data[indices], targets[indices]
 
     # Split data into training and validation sets
-    x_train, x_test, y_train, y_test = train_test_split(data, targets, test_size=0.2, random_state=42)
-
-    return x_train, x_test, y_train, y_test
+    return train_test_split(data, targets, test_size=0.2, random_state=42)
