@@ -34,8 +34,8 @@ def visualize_augmentation(data_augmentation, x_train):
         plt.axis("off")
     plt.show()
 
-# Visualize the augmented images
-visualize_augmentation(data_augmentation, x_train)
+# Visualize the augmented images (for testing)
+# visualize_augmentation(data_augmentation, x_train)
 
 # Define the Xception-based CNN Model
 def build_xception_model():
