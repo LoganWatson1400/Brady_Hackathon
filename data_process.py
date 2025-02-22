@@ -6,10 +6,10 @@ import numpy as np
 import data_augment
 
 ## Constants ##
-DATA_PATH = DATA
+#DATA_PATH = DATA
 FORMATS = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
 IMAGE_SIZE_LIMIT = 224  # This can be tweaked
-AUGS = 0  # Number of augmented copies to create for each image
+# AUGS = 0  # Number of augmented copies to create for each image
 
 def load_images(dir, title_index):
     """
@@ -49,7 +49,7 @@ def prepare_data():
     """
     data_paths, targets = [], []
     for i, title in enumerate(VIOLATIONS):
-        title_path = os.path.join(DATA_PATH, title)
+        title_path = os.path.join(DATA, title)
         paths, lbls = load_images(title_path, i+1)
         data_paths.extend(paths)
         targets.extend(lbls)
@@ -74,6 +74,9 @@ def prepare_data():
     indices = np.arange(len(data))
     np.random.shuffle(indices)
     data, targets = data[indices], targets[indices]
+
+    # Convert targets to categorical
+    targets = tf.keras.utils.to_categorical(targets, num_classes=7)
 
     # Split data into training and validation sets
     return train_test_split(data, targets, test_size=0.2, random_state=42)
