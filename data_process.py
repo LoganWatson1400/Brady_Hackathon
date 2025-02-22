@@ -22,6 +22,7 @@ def load_images(dir, title_index):
         x_dir = os.path.join(dir, x)
         if not os.path.exists(x_dir):
             continue
+            
         for img_file in os.listdir(x_dir):
             if img_file.lower().endswith(FORMATS):
                 img_path = os.path.join(x_dir, img_file)
@@ -75,6 +76,9 @@ def prepare_data():
     indices = np.arange(len(data))
     np.random.shuffle(indices)
     data, targets = data[indices], targets[indices]
+
+    # Convert targets to categorical
+    targets = tf.keras.utils.to_categorical(targets, num_classes=7)
 
     # Split data into training and validation sets
     return train_test_split(data, targets, test_size=0.2, random_state=42)
