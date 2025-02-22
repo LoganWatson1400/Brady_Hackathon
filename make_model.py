@@ -44,8 +44,8 @@ def build_xception_model():
 
     model = tf.keras.models.Sequential([
         # tf.keras.layers.InputLayer(input_shape=(224, 224, 3)),
-        base_model,
         data_augmentation,  # Augmentations happen inside the model
+        base_model,
         tf.keras.layers.GlobalAveragePooling2D(),
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dropout(dropout),  # Reduce overfit
