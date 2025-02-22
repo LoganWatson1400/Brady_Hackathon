@@ -76,7 +76,8 @@ def prepare_data():
     data, targets = data[indices], targets[indices]
 
     # Convert targets to categorical
-    targets = tf.keras.utils.to_categorical(targets, num_classes=7)
+    targets = np.array(new_targets)
+    targets = targets.reshape(-1, 7)  # Ensure targets have shape (None, 7)
 
     # Split data into training and validation sets
     return train_test_split(data, targets, test_size=0.2, random_state=42)

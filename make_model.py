@@ -48,9 +48,12 @@ def build_xception_model():
         tf.keras.layers.GlobalAveragePooling2D(),
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dropout(dropout),  # Reduce overfit
-        tf.keras.layers.Dense(7, activation='softmax')
+        tf.keras.layers.Dense(7, activation='softmax')  # Ensure output shape is (None, 7)
     ])
 
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss="categorical_crossentropy", metrics=["accuracy"])
+
+    # Build the model by providing it with an input shape
+    model.build(input_shape=(None, 224, 224, 3))
 
     return model

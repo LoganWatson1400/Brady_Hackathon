@@ -18,6 +18,9 @@ if os.path.exists(MODEL_PATH):
     model = tf.keras.models.load_model(MODEL_PATH)
 else:
     model = make_model.build_xception_model()
+
+# Ensure the model is built before printing the summary
+model.build(input_shape=(None, 224, 224, 3))
 model.summary()
 
 class CustomSaver(tf.keras.callbacks.Callback):
