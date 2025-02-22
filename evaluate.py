@@ -3,12 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, classification_report, precision_score, recall_score, roc_auc_score, roc_curve, f1_score
 import tensorflow as tf
-import global_paths as g
-from data_process import prepare_data
-
-## variables ##
-violations = g.VIOLATIONS
-###############
+from global_paths import VIOLATIONS
 
 def load_model(model_path):
     if os.path.exists(model_path):
@@ -20,14 +15,14 @@ def evaluate_model(model, x_test, y_test):
     y_test_labels = y_test.argmax(axis=1)
     y_pred = model.predict(x_test)
     y_pred_classes = y_pred.argmax(axis=1)  # Convert probabilities to class labels
-    target_names = ["No Violation"] + violations
+    target_names = ["No Violation"] + VIOLATIONS
 
     # Debug: Check the distribution of classes in the test set
     unique_test_classes, test_class_counts = np.unique(y_test_labels, return_counts=True)
     print(f"Unique classes in y_test: {unique_test_classes}")
     print(f"Class distribution in y_test: {dict(zip(unique_test_classes, test_class_counts))}")
 
-    labels = list(range(len(violations)))  # Ensure labels match the number of classes
+    labels = list(range(len(VIOLATIONS)+1))  # Ensure labels match the number of classes
     print("\nClassification Report:")
     print(classification_report(y_test_labels, y_pred_classes, target_names=target_names, labels=labels, zero_division=1))
 

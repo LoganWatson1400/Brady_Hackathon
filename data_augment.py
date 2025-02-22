@@ -2,6 +2,12 @@ import cv2
 import numpy as np
 import random
 
+"""
+This file is not used currently because the data augmentation is done in the model.py file.
+as a layer in the model. This file is kept here for reference purposes.
+"""
+
+
 def rotate_image(image, angle):
     # Rotate the image by a given angle
     (h, w) = image.shape[:2]

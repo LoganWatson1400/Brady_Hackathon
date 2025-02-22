@@ -3,6 +3,7 @@ import pickle
 import tensorflow as tf
 from evaluate import evaluate_model, plot_metrics
 from data_process import prepare_data
+from global_paths import MODEL_PATH, HISTORY_PATH
 
 def load_model_and_history(model_path, history_path):
     if os.path.exists(model_path):
@@ -18,12 +19,9 @@ def load_model_and_history(model_path, history_path):
     
     return model, history
 
-
 _, x_test, _, y_test = prepare_data()
-model_path = 'my_model.keras'
-history_path = 'history.pkl'
 
-model, history = load_model_and_history(model_path, history_path)
+model, history = load_model_and_history(MODEL_PATH, HISTORY_PATH)
 
 # Evaluate the model
 y_pred, accuracy, precision, recall, f1 = evaluate_model(model, x_test, y_test)

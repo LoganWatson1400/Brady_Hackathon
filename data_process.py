@@ -1,13 +1,12 @@
 import os
 import tensorflow as tf
-import global_paths as g
+from global_paths import DATA, VIOLATIONS
 from sklearn.model_selection import train_test_split
 import numpy as np
 import data_augment
 
 ## Constants ##
-DATA_PATH = g.DATA
-VIOLATIONS = g.VIOLATIONS
+DATA_PATH = DATA
 FORMATS = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
 IMAGE_SIZE_LIMIT = 224  # This can be tweaked
 AUGS = 0  # Number of augmented copies to create for each image
@@ -61,12 +60,12 @@ def prepare_data():
         image = preprocess_image(path)
         data.append(image)
         new_targets.append(target)
-        # Augment the data
-        for _ in range(AUGS):
-            augmented_image = data_augment.augment_image(image)
-            augmented_image = tf.image.resize(augmented_image, [IMAGE_SIZE_LIMIT, IMAGE_SIZE_LIMIT]).numpy()
-            data.append(augmented_image)
-            new_targets.append(target)
+        # Augment the data by creating augmented copies (replaced with aug in model.py)
+        # for _ in range(AUGS):
+        #     augmented_image = data_augment.augment_image(image)
+        #     augmented_image = tf.image.resize(augmented_image, [IMAGE_SIZE_LIMIT, IMAGE_SIZE_LIMIT]).numpy()
+        #     data.append(augmented_image)
+        #     new_targets.append(target)
 
     data = np.array(data)
     targets = np.array(new_targets)

@@ -1,11 +1,8 @@
 import tensorflow as tf
-import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix
 from data_process import prepare_data
-import global_paths as g
-
-MODEL_PATH = g.MODEL
+from global_paths import MODEL_PATH, VIOLATIONS
 
 # Load the dataset
 x_train, x_test, y_train, y_test = prepare_data()
@@ -24,27 +21,23 @@ print(f"Test Accuracy: {accuracy:.2f}")
 
 # Predict on test set
 y_pred_probs = model.predict(x_test)
-y_pred = (y_pred_probs > 0.5).astype("int32")  # Convert probabilities to binary labels
+y_pred = y_pred_probs.argmax(axis=1)  # Convert probabilities to class labels
 
 # Classification Report
 print("\nClassification Report:")
-print(classification_report(y_test, y_pred, target_names=["Before (Non-Compliant)", "After (Compliant)"]))
-
-# Confusion Matrix
-conf_matrix = confusion_matrix(y_test, y_pred)
-print("\nConfusion Matrix:")
-print(conf_matrix)
+target_names = ["No Violation"] + VIOLATIONS
+print(classification_report(y_test.argmax(axis=1), y_pred, target_names=target_names))
 
 def visualize_prediction(index):
     plt.imshow(x_test[index])
     plt.axis("off")
-    pred_label = "Compliant Pred" if y_pred[index] == 1 else "Non-Compliant Pred"
-    actual_label = "Compliant" if y_test[index] == 1 else "Non-Compliant"
-    plt.title(f"Actual: {actual_label}\nPredicted: {pred_label}")
+    pred_label = f"Pred: {target_names[y_pred[index]]}"
+    actual_label = f"Actual: {target_names[y_test[index].argmax()]}"
+    plt.title(f"{actual_label}\n{pred_label}")
     plt.show()
 
 # Show couple of sample predictions
-for i in range(3):  
+for i in range(20):  
     visualize_prediction(i)
 
 
