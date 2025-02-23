@@ -77,8 +77,11 @@ def prepare_data():
     np.random.shuffle(indices)
     data, targets = data[indices], targets[indices]
 
-    # Convert targets to categorical
-    targets = tf.keras.utils.to_categorical(targets, num_classes=7)
-
     # Split data into training and validation sets
-    return train_test_split(data, targets, test_size=0.2, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(data, targets, test_size=0.2, random_state=42)
+
+    # Ensure x_train and y_train have the same number of samples
+    assert len(x_train) == len(y_train), "Mismatch in number of samples between x_train and y_train"
+    assert len(x_test) == len(y_test), "Mismatch in number of samples between x_test and y_test"
+
+    return x_train, x_test, y_train, y_test

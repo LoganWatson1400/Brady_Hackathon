@@ -53,5 +53,5 @@ def build_xception_model():
     ])
 
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss="categorical_crossentropy", metrics=["accuracy"])
-
+    model.build((None, 224, 224, 3))
     return model

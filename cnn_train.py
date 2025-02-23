@@ -9,12 +9,16 @@ import global_paths as g
 
 ## variables ##
 violations = g.VIOLATIONS
-epochs = 20
+epochs = 2
 batch_size = 64
 patience = 5
 ###############
 
 x_train, x_test, y_train, y_test = prepare_data()
+
+# Ensure x_train and y_train have the same number of samples
+assert len(x_train) == len(y_train), "Mismatch in number of samples between x_train and y_train"
+assert len(x_test) == len(y_test), "Mismatch in number of samples between x_test and y_test"
 
 model_path = 'my_model.keras'
 if os.path.exists(model_path):
