@@ -9,9 +9,9 @@ import global_paths as g
 
 ## variables ##
 violations = g.VIOLATIONS
-epochs = 2
+epochs = 1000
 batch_size = 64
-patience = 5
+patience = 10
 ###############
 
 x_train, x_test, y_train, y_test = prepare_data()

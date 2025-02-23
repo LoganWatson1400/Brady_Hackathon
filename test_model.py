@@ -2,8 +2,9 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix
 from data_process import prepare_data
-from global_paths import MODEL_PATH, VIOLATIONS
+from global_paths import VIOLATIONS
 
+MODEL_PATH = 'my_model.keras'
 # Load the dataset
 x_train, x_test, y_train, y_test = prepare_data()
 
@@ -31,9 +32,14 @@ print(classification_report(y_test.argmax(axis=1), y_pred, target_names=target_n
 def visualize_prediction(index):
     plt.imshow(x_test[index])
     plt.axis("off")
-    pred_label = f"Pred: {target_names[y_pred[index]]}"
+    pred_label = f"Pred: {target_names[y_pred[index]]}\n({y_pred_probs[index].max() * 100:.2f}%)"
     actual_label = f"Actual: {target_names[y_test[index].argmax()]}"
     plt.title(f"{actual_label}\n{pred_label}")
+    
+    # Add a green box if prediction matches actual, red otherwise
+    color = 'green' if y_pred[index] == y_test[index].argmax() else 'red'
+    plt.gca().add_patch(plt.Rectangle((0, 0), plt.gca().get_xlim()[1], plt.gca().get_ylim()[0], 
+                                      linewidth=4, edgecolor=color, facecolor='none'))
     plt.show()
 
 # Show couple of sample predictions
