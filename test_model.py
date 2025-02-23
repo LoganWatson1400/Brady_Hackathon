@@ -25,21 +25,23 @@ y_pred_probs = model.predict(x_test)
 y_pred = y_pred_probs.argmax(axis=1)  # Convert probabilities to class labels
 
 # Classification Report
-print("\nClassification Report:")
+# print("\nClassification Report:")
 target_names = ["No Violation"] + VIOLATIONS
-print(classification_report(y_test.argmax(axis=1), y_pred, target_names=target_names))
+# print(classification_report(y_test.argmax(axis=1), y_pred, target_names=target_names))
 
 def visualize_prediction(index):
     plt.imshow(x_test[index])
     plt.axis("off")
-    pred_label = f"Pred: {target_names[y_pred[index]]}\n({y_pred_probs[index].max() * 100:.2f}%)"
+    pred_label = f"Pred: {target_names[y_pred[index]]}"
+    pred_prob = f"Prob: {y_pred_probs[index].max() * 100:.2f}%"
     actual_label = f"Actual: {target_names[y_test[index].argmax()]}"
-    plt.title(f"{actual_label}\n{pred_label}")
+    plt.title(f"{actual_label}\n{pred_label}\n{pred_prob}")
     
     # Add a green box if prediction matches actual, red otherwise
     color = 'green' if y_pred[index] == y_test[index].argmax() else 'red'
     plt.gca().add_patch(plt.Rectangle((0, 0), plt.gca().get_xlim()[1], plt.gca().get_ylim()[0], 
                                       linewidth=4, edgecolor=color, facecolor='none'))
+    plt.subplots_adjust(top=0.8)  # Adjust the top to make space for the title
     plt.show()
 
 # Show couple of sample predictions
