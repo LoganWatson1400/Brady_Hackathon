@@ -14,6 +14,7 @@ Akash Reddy Jammula\
 Gurleen Singh\
 Logan Watson\
 Patrick "Jack" Harmer
+Khatera Nazari
 
 ## References
 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)\

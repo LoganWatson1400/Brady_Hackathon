@@ -3,66 +3,85 @@ import tensorflow as tf
 import global_paths as g
 from sklearn.model_selection import train_test_split
 import numpy as np
+# import data_augment
 
-## paths ##
+## Constants ##
 DATA_PATH = g.DATA
-## constants ##
+VIOLATIONS = g.VIOLATIONS
+FORMATS = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
+IMAGE_SIZE_LIMIT = 224  # This can be tweaked
+AUGS = 0  # Number of augmented copies to create for each image
 
-# Parameters
-allowed_formats = ('.bmp', '.gif', '.jpeg', '.jpg', '.png')
-image_size_limit = 224 # this can be tweaked
-
-# Load images manually
-def load_images(dir):
+def load_images(dir, title_index):
+    """
+    Load image paths and labels from the specified directory.
+    """
     image_paths = []
     labels = []
-    # Before = before violation fix
-    # After = after violation fix
     for x in ['Before', 'After']:
         x_dir = os.path.join(dir, x)
         if not os.path.exists(x_dir):
             continue
+            
         for img_file in os.listdir(x_dir):
-            if img_file.lower().endswith(allowed_formats):
+            if img_file.lower().endswith(FORMATS):
                 img_path = os.path.join(x_dir, img_file)
                 image_paths.append(img_path)
-                labels.append(0 if x == 'Before' else 1)  # Convert labels to binary
+                label = [0] * 7
+                if x == 'After':
+                    label[0] = 1  # No violation for "After" images
+                else:
+                    label[title_index] = 1  # One-hot encode the title
+                labels.append(label)
     return image_paths, labels
 
-# Load and preprocess images
-def load_and_preprocess_image(path):
+def preprocess_image(path):
+    """
+    Load and preprocess the image.
+    """
     image = tf.io.read_file(path)
     image = tf.image.decode_image(image, channels=3)
-    image = tf.image.resize(image, [image_size_limit, image_size_limit])  # Resize to a fixed size
+    image = tf.image.resize(image, [IMAGE_SIZE_LIMIT, IMAGE_SIZE_LIMIT])
     image = image / 255.0  # Normalize to [0, 1]
-    return image
+    return image.numpy()
 
-# Process all folders under the data directory
 def prepare_data():
-    data_paths = []
-    targets = []
-    for title in os.listdir(DATA_PATH):
+    """
+    Process all folders under the data directory and prepare the dataset.
+    """
+    data_paths, targets = [], []
+    for i, title in enumerate(VIOLATIONS):
         title_path = os.path.join(DATA_PATH, title)
-        if not os.path.isdir(title_path):
-            continue
-
-        print(f"Processing title: {title}")
-        paths, lbls = load_images(title_path)
+        paths, lbls = load_images(title_path, i+1)
         data_paths.extend(paths)
         targets.extend(lbls)
 
     # Load and preprocess images
-    data = [load_and_preprocess_image(path) for path in data_paths]
+    data, new_targets = [], []
+    for path, target in zip(data_paths, targets):
+        image = preprocess_image(path)
+        data.append(image)
+        new_targets.append(target)
+        # Augment the data by creating augmented copies (replaced with aug in model.py)
+        # for _ in range(AUGS):
+        #     augmented_image = data_augment.augment_image(image)
+        #     augmented_image = tf.image.resize(augmented_image, [IMAGE_SIZE_LIMIT, IMAGE_SIZE_LIMIT]).numpy()
+        #     data.append(augmented_image)
+        #     new_targets.append(target)
+
     data = np.array(data)
-    targets = np.array(targets)
+    targets = np.array(new_targets)
 
     # Shuffle data
     indices = np.arange(len(data))
     np.random.shuffle(indices)
-    data = data[indices]
-    targets = targets[indices]
+    data, targets = data[indices], targets[indices]
 
     # Split data into training and validation sets
-    train_data, val_data, train_targets, val_targets = train_test_split(data, targets, test_size=0.2, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(data, targets, test_size=0.2, random_state=42)
 
-    return train_data, val_data, train_targets, val_targets
+    # Ensure x_train and y_train have the same number of samples
+    assert len(x_train) == len(y_train), "Mismatch in number of samples between x_train and y_train"
+    assert len(x_test) == len(y_test), "Mismatch in number of samples between x_test and y_test"
+
+    return x_train, x_test, y_train, y_test
