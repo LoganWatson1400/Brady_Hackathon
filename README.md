@@ -13,7 +13,7 @@ Alex Jones\
 Akash Reddy Jammula\
 Gurleen Singh\
 Logan Watson\
-Patrick "Jack" Harmer
+Patrick "Jack" Harmer\
 Khatera Nazari
 
 ## References
