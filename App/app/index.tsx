@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createDrawerNavigator} from '@react-navigation/drawer';
 import Home from '@/screens/Home'
 import Info from '@/screens/Info';
@@ -19,8 +19,7 @@ export default function App() {
                 <Burger.Screen name='Home' component={Home} />
                 <Burger.Screen name='Info' component={Info} />
                 <Burger.Screen name='Review' component={Review} />
-                <Burger.Screen name='Settings' component={Settings} />
+                <Burger.Screen name='Profiles' component={Settings} />
             </Burger.Navigator>
     );
 }
-
