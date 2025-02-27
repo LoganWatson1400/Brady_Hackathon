@@ -18,7 +18,8 @@ Khatera Nazari
 
 ## References
 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)\
-[Python PEP8 Style Guide](https://peps.python.org/pep-0008/)
+[Python PEP8 Style Guide](https://peps.python.org/pep-0008/)\
+[Git Branching Conventions](https://graphite.dev/guides/git-branch-naming-conventions)
     
 [GitHub Get Started Guide](https://docs.github.com/en/get-started)\
 [Keras API Documentation](https://keras.io/2.17/api/)\
