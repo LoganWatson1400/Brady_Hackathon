@@ -1,10 +1,5 @@
-import os
 import tensorflow as tf
 from global_paths import VIOLATIONS
-
-import logging
-logging.getLogger('tensorflow').disabled = True
-
 
 #### Constants ####
 IMAGE_SIZE_LIMIT = 224
