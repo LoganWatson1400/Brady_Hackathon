@@ -1,8 +1,8 @@
 //import { useState } from "react";
 import React from 'react'
 import Camera from "@/components/Camera";
-//import Form from "@/components/Form";
-//import { createTable, getRows } from "@/components/database";
+import Form from "@/components/Form";
+import { createTable, getRows } from "@/components/database";
 
 const Home = () => {
     const [open, setOpen] = React.useState(false);
@@ -14,14 +14,14 @@ const Home = () => {
     //       placeholder="hey"/>
     
     
-    //<Form open={open} onChange={()=> {setOpen(true)}}/>
 
-    //createTable("Profiles");
-    //getRows("Profiles");
+    createTable("Profiles");
+    getRows("Profiles");
     return (
         <>
             <Camera open={open} onChange={()=> {setOpen(false)}}/>
 
+            <Form open={open} onChange={()=> {setOpen(true)}}/>
         
         </>
     );
