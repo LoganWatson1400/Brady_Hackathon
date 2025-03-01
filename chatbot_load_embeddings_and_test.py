@@ -14,7 +14,9 @@ def get_best_regulation(query):
     query_embedding = model.encode([query])  # encoding query
     similarities = cosine_similarity(query_embedding, regulation_embeddings)
     best_match_index = similarities.argmax()
-    return regulations[best_match_index].strip()
+    best_match_score = similarities[0, best_match_index] * 100
+
+    return regulations[best_match_index].strip(), best_match_score
 
 queries = [
     "Can you explain OSHA 1910.303(e)(1), which is about electrical equipment markings?",
@@ -25,5 +27,7 @@ queries = [
 
 # Testing
 for query in queries:
+    best_match, best_match_score = get_best_regulation(query)
     print(f"Query: {query}")
-    print(f"Best Matched Regulation: {get_best_regulation(query)}\n")
+    print(f"Similarity Score: {best_match_score: .2f}")
+    print(f"Best Matched Regulation: {best_match}\n")
