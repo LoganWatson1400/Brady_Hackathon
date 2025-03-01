@@ -23,6 +23,11 @@ queries = [
     "What does ANSI A13.1 (Pipe Marking) require?",
     "Tell me about emergency equipment standards.",
     "Can you summarize the ANSI A13.1 (Pipe Marking) regulation?",
+    "What is the regulation for safety evacuations?",
+    "Give me a short explanation of ANSI Z358.1",
+    "Is it true that emergency exits must be clearly marked?",
+    "How often should electrical systems be inspected?",
+    "Can you explain the maintenance standards for emergency showers?",
 ]
 
 # Testing
