@@ -1,27 +1,28 @@
-import { useState } from "react";
-
-import Camera from "@/Components/Camera";
-import Form from "@/Components/Form";
-import { createTable, getRows } from "@/Components/database";
+//import { useState } from "react";
+import React from 'react'
+import Camera from "@/components/Camera";
+//import Form from "@/components/Form";
+//import { createTable, getRows } from "@/components/database";
 
 const Home = () => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = React.useState(false);
 
 
     //<Image
     //       style={{width: 35, height: 35, tintColor: "rgba(28,70,144,1)"}}
     //       source={require('../assets/images/Camera-icon.png')}
     //       placeholder="hey"/>
+    
+    
+    //<Form open={open} onChange={()=> {setOpen(true)}}/>
 
-
-    // <Form open={open} onChange={()=> {setOpen(true)}}/>
-    // <Camera open={open} onChange={()=> {setOpen(false)}}/>
-
-    createTable("Profiles");
-    getRows("Profiles");
+    //createTable("Profiles");
+    //getRows("Profiles");
     return (
         <>
-            
+            <Camera open={open} onChange={()=> {setOpen(false)}}/>
+
+        
         </>
     );
 }
