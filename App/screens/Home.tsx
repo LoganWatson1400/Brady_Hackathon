@@ -15,6 +15,8 @@ const Home = () => {
 
     //deleteProfileTable()
     //deleteReportTable()
+
+    
     // Creates profile table if does not exist.
     createProfileTable();
 
@@ -22,8 +24,6 @@ const Home = () => {
     createReportTable();
     // <Form open={open} onChange={toggle}/>
     // <Camera open={open}/>
-
-    getAllReports();
 
 
     return (
