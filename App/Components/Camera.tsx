@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 
-export default function Camera(props: {open: boolean, onChange: any}) {
+export default function Camera(props: {open: boolean}) {
     const [permission, requestPermission] = useCameraPermissions();
     const [photo, setPhoto] = useState<string | null>(null);
     const [isCameraOpen, setIsCameraOpen] = useState(false);
@@ -16,7 +16,7 @@ export default function Camera(props: {open: boolean, onChange: any}) {
             requestPermission();
         }
 
-        if(props.open) setIsCameraOpen(true);
+        setIsCameraOpen(props.open);
 
     }, [permission, props.open]);
 
@@ -82,46 +82,30 @@ export default function Camera(props: {open: boolean, onChange: any}) {
                         facing="back"
                     />
 
-                    {/* Close Camera & Take Picture Buttons (Side by Side & Centered) */}
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', position: 'absolute', bottom: 20 }}>
-                        
-                        {/* Close Camera Button (Left) */}
-                        <TouchableOpacity
-                            onPress={() => {setIsCameraOpen(false); props.onChange()}}
+                    {/* Capture Photo */}
+                    <Pressable onPress={takePicture}>
+                        <Image
+                            width={50}
+                            height={50}
                             style={{
-                                paddingVertical: 12,
-                                paddingHorizontal: 20,
-                                backgroundColor: '#E63946',
+                                width: 50, 
+                                height: 50, 
+                                tintColor: "rgba(28,70,144,1)",
                                 borderRadius: 10,
                                 alignItems: 'center',
-                                justifyContent: 'center',
-                                marginRight: 10, // Space between buttons
+                                alignSelf: "center",
+                                position: "absolute",
+                                bottom: 20,
                             }}
-                        >
-                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Close Camera</Text>
-                        </TouchableOpacity>
-
-                        {/* Take Picture Button (Right) */}
-                        <TouchableOpacity
-                            onPress={takePicture}
-                            style={{
-                                paddingVertical: 12,
-                                paddingHorizontal: 20,
-                                backgroundColor: '#1D3557',
-                                borderRadius: 10,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Take Picture</Text>
-                        </TouchableOpacity>
-                    </View>
+                            source={require('../assets/images/camera.png')}
+                            alt='Capture'
+                        />
+                    </Pressable>
                 </>
             ) : (
                 <>
                     {photo ? (
                         <>
-
                             <Image source={{ uri: photo }} style={{ width: 300, height: 400, marginBottom: 20 }} />
 
                             {/* Retake & Upload Buttons (Side by Side & Centered) */}
@@ -170,13 +154,6 @@ export default function Camera(props: {open: boolean, onChange: any}) {
                         </>
                     ) : (
                         <View></View>
-                        /* Centered Take Picture Button */
-                        //<TouchableOpacity
-                        //    onPress={() => setIsCameraOpen(true)}
-                        //    style={{ padding: 10, backgroundColor: 'rgba(28,70,144,1)', borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
-                        //>
-                        //</>    <Text style={{ color: 'white', fontSize: 20 }}>Take Picture</Text>
-                        //</TouchableOpacity>
                     )}
                 </>
             )}

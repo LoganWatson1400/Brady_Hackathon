@@ -10,32 +10,56 @@ import {
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-const data = [
-  { label: "New Profile", value: "New Profile", search: "New Profile" },
-  { label: "Profile", value: "Profile", search: "Profile" },
-];
+import { addProfile, getProfiles, grabProfiles } from "./profiles";
 
+// RED : '#E63946'
 
-function MyForm(props: {open: boolean, onChange: any}) {
-  const { watch, control, handleSubmit, reset } = useForm();
-  const [submittedData, setSubmittedData] = useState(null);
+export default function Form(props: {open: boolean, onChange: any}) {
+  const { control, handleSubmit, reset } = useForm();
   const [value, setValue] = useState<string>("");
   const [newProfile, setNewProfile] = useState(false);
+  const [submittedData, setSubmittedData] = useState({
+    "desc": undefined, 
+    "loc": undefined, 
+    "person_name": undefined, 
+    "profile_name": undefined, 
+    "report_name": undefined
+  });
 
+  
+  const data = [{"value": "New Profile"}];
 
+  const [profiles, setProfiles] = useState(data);
 
+  const [test, setTest] = useState(data);
   const toggle = (item: any) => {
     setValue(item.value);
     setNewProfile(item.value === "New Profile" ? true : false);
   };
 
-  const onSubmit = (data: any) => {
-    setSubmittedData(data);
-    reset();
+  if(newProfile) {
+    grabProfiles(setProfiles);
+  }
+
+  const onSubmit = (formdata: any) => {
+    // Sets data only when starting report.
+    if(!props.open) {
+      setSubmittedData(formdata);
+      if(newProfile) addProfile(formdata.profile_name, formdata.loc, formdata.desc);
+    }
+
+    // Later add report tables.
+    else {/* profile_name, your_name, report_name */}
+
+    getProfiles(setTest)
+    console.log("TEST" , test)
+
+    setNewProfile(false);
+
+    //reset();
 
     props.onChange();
   };
-
 
   const styles = StyleSheet.create({
     container: {
@@ -166,7 +190,6 @@ function MyForm(props: {open: boolean, onChange: any}) {
     },
   });
 
-
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -176,14 +199,14 @@ function MyForm(props: {open: boolean, onChange: any}) {
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
-            data={data}
+            data={profiles}
             autoScroll
             search
-            maxHeight={200}
+            maxHeight={150}
             minHeight={100}
-            labelField="label"
+            labelField="value"
             valueField="value"
-            searchField="search"
+            searchField="value"
             placeholder={"Choose Profile"}
             searchPlaceholder="Search"
             value={value}
@@ -192,12 +215,12 @@ function MyForm(props: {open: boolean, onChange: any}) {
         </View>
 
         <Controller
-          name="personName"
+          name="person_name"
           control={control}
           render={( { field: { onChange, onBlur, value } } ) => (
             <TextInput
               style={styles.yourName}
-              placeholder="Your Name"
+              placeholder={"Your Name"}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value} 
@@ -206,6 +229,7 @@ function MyForm(props: {open: boolean, onChange: any}) {
         />
 
         <Controller
+        name="profile_name"
           control={control}
           render={( { field: { onChange, onBlur, value } } ) => (
             <TextInput
@@ -216,10 +240,10 @@ function MyForm(props: {open: boolean, onChange: any}) {
               value={value} 
             />
           )}
-          name="profileName"
         />
 
         <Controller
+          name="loc"
           control={control}
           render={( { field: { onChange, onBlur, value } } ) => (
             <TextInput
@@ -230,10 +254,10 @@ function MyForm(props: {open: boolean, onChange: any}) {
               value={value} 
             />
           )}
-          name="loc"
         />
 
         <Controller
+          name="desc"
           control={control}
           render={( { field: { onChange, onBlur, value } } ) => (
             <TextInput
@@ -244,21 +268,20 @@ function MyForm(props: {open: boolean, onChange: any}) {
               value={value} 
             />
           )}
-          name="desc"
         />
 
         <Controller
+          name="report_name"
           control={control}
           render={( { field: { onChange, onBlur, value } } ) => (
             <TextInput
               style={styles.report}
-              placeholder="Report Name"
+              placeholder={"Report Name"}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value} 
             />
           )}
-          name="reportName"
         />
 
         <View style={styles.buttonContainer}>
@@ -266,12 +289,8 @@ function MyForm(props: {open: boolean, onChange: any}) {
             <Text style={styles.text}>{props.open ? "End Report" : "Start Report"}</Text>
           </Pressable>
         </View>
-        
-
-
       </View>
     </SafeAreaView>
   );
 }
 
-export default MyForm;

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "expo": "^52.0.37",
+    "expo-image": "~2.0.6",
     "expo-sqlite": "^15.1.2"
   }
 }

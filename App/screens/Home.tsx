@@ -1,27 +1,27 @@
 import { useState } from "react";
-
 import Camera from "@/Components/Camera";
 import Form from "@/Components/Form";
-import { createTable, getRows } from "@/Components/database";
+
+import { createProfileTable } from "@/Components/profiles";
 
 const Home = () => {
     const [open, setOpen] = useState(false);
 
+    const toggle = () => {
+        setOpen(open ? false : true);
+    }
+    
+    // Creates profile table if does not exist.
+    createProfileTable();
+    // <Form open={open} onChange={toggle}/>
+    // <Camera open={open}/>
 
-    //<Image
-    //       style={{width: 35, height: 35, tintColor: "rgba(28,70,144,1)"}}
-    //       source={require('../assets/images/Camera-icon.png')}
-    //       placeholder="hey"/>
 
 
-    // <Form open={open} onChange={()=> {setOpen(true)}}/>
-    // <Camera open={open} onChange={()=> {setOpen(false)}}/>
-
-    createTable("Profiles");
-    getRows("Profiles");
     return (
         <>
-            
+            <Form open={open} onChange={toggle}/>
+            <Camera open={open}/>
         </>
     );
 }
