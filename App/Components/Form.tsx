@@ -13,7 +13,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { addProfile, mapProfiles } from "./profiles";
 import { addReport } from "./reports";
 
-// RED : '#E63946'
+
 
 export default function Form(props: {open: boolean, onChange: any}) {
   const { control, handleSubmit, reset } = useForm();
@@ -142,18 +142,23 @@ export default function Form(props: {open: boolean, onChange: any}) {
       borderRadius: 10,
       borderWidth: 1,
       borderColor: "gray",
-      margin: 5,
+      marginHorizontal: 5,
+      marginTop: 4,
       backgroundColor: "rgba(28,70,144,1)",
       width: 100,
+      height: 40,
     },
 
     buttonContainer: {
       justifyContent: "flex-start",
+
     },
 
     text: {
       color: "white",
       textAlign: "center",
+      fontSize: 14,
+      fontWeight: "bold"
     },
 
     dropContainer: {
