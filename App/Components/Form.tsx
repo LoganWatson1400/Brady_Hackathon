@@ -37,8 +37,8 @@ export default function Form(props: {open: boolean, onChange: any}) {
     setNewProfile(item.value === "New Profile" ? true : false);
   };
 
-  if(newProfile) {
-    grabProfiles(setProfiles);
+  if(props.open) {
+    grabProfiles(profiles, setProfiles);
   }
 
   const onSubmit = (formdata: any) => {
@@ -50,9 +50,6 @@ export default function Form(props: {open: boolean, onChange: any}) {
 
     // Later add report tables.
     else {/* profile_name, your_name, report_name */}
-
-    getProfiles(setTest)
-    console.log("TEST" , test)
 
     setNewProfile(false);
 

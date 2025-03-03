@@ -50,11 +50,10 @@ export async function deleteProfileTable() {
 }
 
 
-export async function grabProfiles(callBack) {
+export async function grabProfiles(dataBefore, callBack) {
     try {
         const db = await sql.openDatabaseAsync('storage.db');
         const all_profiles = await db.getAllAsync('SELECT profile_name FROM profiles;');
-        console.log("GRAB ", all_profiles)
 
         let profile_list = [];
 
@@ -62,12 +61,16 @@ export async function grabProfiles(callBack) {
             profile_list.push({"value" : elem["profile_name"]})
         });
 
-        callBack(profile_list);
+        if(!compare(dataBefore, profile_list)) callBack(profile_list);
 
     } catch (e) { console.error("grabProfiles", e) }
-        
-
 }
 
+function compare(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    arr1.sort();
+    arr2.sort();
+    return JSON.stringify(arr1) === JSON.stringify(arr2);
+}
 
 
