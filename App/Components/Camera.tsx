@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ActivityIndicator, StyleSheet } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { predictFromImage, loadModel } from '@/components/modelScript'
 
 export default function Camera(props: {open: boolean, onChange: any}) {
     const [permission, requestPermission] = useCameraPermissions();
@@ -35,34 +36,24 @@ export default function Camera(props: {open: boolean, onChange: any}) {
         }
     };
 
-    // Upload image to ML API
-    const uploadImage = async () => {
+     const uploadImage = async () => {
         if (!photo) return;
 
         setIsUploading(true);
         setUploadResult(null);
 
         try {
-            let formData = new FormData();
-            // formData.append('file', {
-            //     uri: photo,
-            //     name: 'image.jpg',
-            //     type: 'image/jpeg',
-            // });
+            // Ensure the model is loaded
+            await loadModel();
 
-            const response = await fetch('https://your-ml-api.com/upload', { // Replace with your ML API
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                body: formData,
-            });
-
-            const result = await response.json();
-            setUploadResult(result.message || "Upload failed");
+            // Run prediction on the selected image
+            const predictions = await predictFromImage(photo);
+            
+            // Process predictions (Modify as needed)
+            setUploadResult(`Predictions: ${predictions.join(", ")}`);
         } catch (error) {
-            console.error("Error uploading image:", error);
-            setUploadResult("no deploy, 2 week. check repo.");
+            console.error("Error processing image:", error);
+            setUploadResult("Prediction failed. Check the model.");
         }
 
         setIsUploading(false);

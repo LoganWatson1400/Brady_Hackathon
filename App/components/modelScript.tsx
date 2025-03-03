@@ -1,4 +1,5 @@
 
+/*
 import { loadPyodide , PyodideInterface} from "pyodide";
 import { CameraCapturedPicture } from "expo-camera";
 
@@ -30,4 +31,53 @@ export default async function modelScript(image: CameraCapturedPicture) {
 
   return output;
 }
+*/
+
+import * as tf from "@tensorflow/tfjs";
+import "@tensorflow/tfjs-react-native";
+
+// Load the model once and reuse it
+let model: tf.LayersModel | null = null;
+
+export const loadModel = async () => {
+  await tf.ready();
+  if (!model) {
+    try {
+      model = await tf.loadLayersModel(require("./assets/model.json")); // Adjust path as needed
+      console.log("Model loaded successfully");
+    } catch (error) {
+      console.error("Error loading model:", error);
+    }
+  }
+};
+
+export const predictFromImage = async (imageUri: string): Promise<number[]> => {
+  if (!model) {
+    console.warn("Model not loaded. Loading now...");
+    await loadModel();
+  }
+
+  try {
+    const imageTensor = await imageToTensor(imageUri);
+    const outputTensor = model!.predict(imageTensor) as tf.Tensor;
+    const outputArray = await outputTensor.data();
+
+    // Dispose tensors to free up memory
+    imageTensor.dispose();
+    outputTensor.dispose();
+
+    return Array.from(outputArray);
+  } catch (error) {
+    console.error("Error during prediction:", error);
+    return [];
+  }
+};
+
+// Convert image to Tensor
+const imageToTensor = async (imageUri: string) => {
+  const response = await fetch(imageUri);
+  const imageData = await response.blob();
+  const imageBitmap = await createImageBitmap(imageData);
+  return tf.browser.fromPixels(imageBitmap).toFloat().div(255.0).expandDims(0);
+};
 
