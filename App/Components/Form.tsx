@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-import { addProfile, getProfiles, grabProfiles } from "./profiles";
+import { addProfile, mapProfiles } from "./profiles";
 
 // RED : '#E63946'
 
@@ -25,27 +25,29 @@ export default function Form(props: {open: boolean, onChange: any}) {
     "profile_name": undefined, 
     "report_name": undefined
   });
-
   
   const data = [{"value": "New Profile"}];
 
   const [profiles, setProfiles] = useState(data);
 
-  const [test, setTest] = useState(data);
   const toggle = (item: any) => {
     setValue(item.value);
     setNewProfile(item.value === "New Profile" ? true : false);
   };
 
   if(props.open) {
-    grabProfiles(profiles, setProfiles);
+    mapProfiles(profiles, setProfiles);
   }
 
   const onSubmit = (formdata: any) => {
     // Sets data only when starting report.
     if(!props.open) {
       setSubmittedData(formdata);
-      if(newProfile) addProfile(formdata.profile_name, formdata.loc, formdata.desc);
+      if(newProfile) {
+        addProfile(formdata.profile_name, formdata.loc, formdata.desc);
+        setValue(formdata.profile_name);
+      
+      }
     }
 
     // Later add report tables.

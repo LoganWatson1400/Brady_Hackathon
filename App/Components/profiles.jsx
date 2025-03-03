@@ -1,7 +1,5 @@
 import * as sql from "expo-sqlite";
 
-
-
 export async function createProfileTable(called) {
     if(!called) {
         try {
@@ -50,7 +48,7 @@ export async function deleteProfileTable() {
 }
 
 
-export async function grabProfiles(dataBefore, callBack) {
+export async function mapProfiles(dataBefore, callBack) {
     try {
         const db = await sql.openDatabaseAsync('storage.db');
         const all_profiles = await db.getAllAsync('SELECT profile_name FROM profiles;');
@@ -63,7 +61,7 @@ export async function grabProfiles(dataBefore, callBack) {
 
         if(!compare(dataBefore, profile_list)) callBack(profile_list);
 
-    } catch (e) { console.error("grabProfiles", e) }
+    } catch (e) { console.error("mapProfiles", e) }
 }
 
 function compare(arr1, arr2) {
@@ -72,5 +70,4 @@ function compare(arr1, arr2) {
     arr2.sort();
     return JSON.stringify(arr1) === JSON.stringify(arr2);
 }
-
 
