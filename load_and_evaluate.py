@@ -20,7 +20,7 @@ def load_model_and_history(model_path, history_path):
 
 
 _, x_test, _, y_test = prepare_data()
-model_path = 'my_model.keras'
+model_path = 'my_model.h5'
 history_path = 'history.pkl'
 
 model, history = load_model_and_history(model_path, history_path)

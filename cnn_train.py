@@ -9,7 +9,7 @@ import global_paths as g
 
 ## variables ##
 violations = g.VIOLATIONS
-epochs = 1000
+epochs = 10000
 batch_size = 64
 patience = 10
 ###############
@@ -20,19 +20,12 @@ x_train, x_test, y_train, y_test = prepare_data()
 assert len(x_train) == len(y_train), "Mismatch in number of samples between x_train and y_train"
 assert len(x_test) == len(y_test), "Mismatch in number of samples between x_test and y_test"
 
-model_path = 'my_model.keras'
+model_path = 'my_model.h5'
 if os.path.exists(model_path):
     model = tf.keras.models.load_model(model_path)
 else:
     model = make_model.build_xception_model()
 model.summary()
-
-class CustomSaver(tf.keras.callbacks.Callback):
-    def on_epoch_end(self, epoch, logs=None):
-        if (epoch + 1) % 10 == 0:
-            self.model.save('my_model_backup.keras', overwrite=True)
-            with open('history_backup.pkl', 'wb') as f:
-                pickle.dump(self.model.history.history, f)
 
 # Add EarlyStopping and CustomSaver callbacks
 early_stopping = tf.keras.callbacks.EarlyStopping(
@@ -40,7 +33,6 @@ early_stopping = tf.keras.callbacks.EarlyStopping(
     patience=patience, 
     restore_best_weights=True
 )
-custom_saver = CustomSaver()
 
 # Train the model
 history = model.fit(
@@ -48,7 +40,8 @@ history = model.fit(
     epochs=epochs, 
     batch_size=batch_size, 
     validation_data=(x_test, y_test),
-    callbacks=[early_stopping, custom_saver]
+    callbacks=[early_stopping],
+    verbose=1  # Set verbosity to 1 for progress bar
 )
 
 if os.path.exists('history.pkl'):
@@ -60,7 +53,7 @@ if os.path.exists('history.pkl'):
 # Save the history & model
 with open('history.pkl', 'wb') as f:
     pickle.dump(history.history, f)
-model.save('my_model.keras')
+model.save('my_model.h5')
 
 # Evaluate the model
 y_pred, accuracy, precision, recall, f1 = evaluate_model(model, x_test, y_test)

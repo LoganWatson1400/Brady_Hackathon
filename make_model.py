@@ -20,7 +20,7 @@ data_augmentation = tf.keras.Sequential([
     tf.keras.layers.RandomHeight(0.1), 
     tf.keras.layers.RandomWidth(0.1),
     tf.keras.layers.RandomContrast(.5),    # Further reduced contrast range
-    tf.keras.layers.RandomHue(0.2),         # Further reduced hue range
+    # tf.keras.layers.RandomHue(0.2),         # Further reduced hue range
 ])
 
 # Function to visualize augmented images
