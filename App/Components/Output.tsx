@@ -12,7 +12,7 @@ export default function Output(props: {isViolation: boolean, violation: string |
 
 const styles = StyleSheet.create({
     body: {
-      height: 40,
+      height: 80,
       borderColor: "gray",
       borderWidth: 1,
       width: 300,

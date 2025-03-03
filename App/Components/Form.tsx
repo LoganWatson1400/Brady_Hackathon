@@ -207,6 +207,8 @@ export default function Form(props: {open: boolean, onChange: any}) {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             data={profiles}
+            itemContainerStyle={{borderRadius: 10}}
+            containerStyle={{borderRadius: 10, backgroundColor: "white"}}
             autoScroll
             search
             maxHeight={150}
@@ -228,6 +230,7 @@ export default function Form(props: {open: boolean, onChange: any}) {
             <TextInput
               style={styles.yourName}
               placeholder={"Your Name"}
+              placeholderTextColor="black"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value} 
@@ -242,6 +245,7 @@ export default function Form(props: {open: boolean, onChange: any}) {
             <TextInput
               style={styles.profileName}
               placeholder="Profile Name"
+              placeholderTextColor="black"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value} 
@@ -256,6 +260,7 @@ export default function Form(props: {open: boolean, onChange: any}) {
             <TextInput
               style={styles.loc}
               placeholder="Location"
+              placeholderTextColor="black"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value} 
@@ -270,6 +275,7 @@ export default function Form(props: {open: boolean, onChange: any}) {
             <TextInput
               style={styles.desc}
               placeholder="Description"
+              placeholderTextColor="black"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value} 
@@ -284,6 +290,7 @@ export default function Form(props: {open: boolean, onChange: any}) {
             <TextInput
               style={styles.report}
               placeholder={"Report Name"}
+              placeholderTextColor="black"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value} 
