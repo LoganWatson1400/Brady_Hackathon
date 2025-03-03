@@ -3,7 +3,7 @@ from global_paths import VIOLATIONS
 
 #### Constants ####
 IMAGE_SIZE_LIMIT = 224
-MODEL = tf.keras.models.load_model('my_model.keras')
+MODEL = tf.keras.models.load_model('my_model.h5')
 TARGET_NAMES = ["No Violation"] + VIOLATIONS
 
 def preprocess_image(path):

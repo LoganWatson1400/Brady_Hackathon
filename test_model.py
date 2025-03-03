@@ -4,7 +4,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from data_process import prepare_data
 from global_paths import VIOLATIONS
 
-MODEL_PATH = 'my_model.keras'
+MODEL_PATH = 'my_model.h5'
 # Load the dataset
 x_train, x_test, y_train, y_test = prepare_data()
 
