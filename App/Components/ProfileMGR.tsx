@@ -1,19 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
 import DropDown from "./dropdown";
 import Button from "./Button";
-import Report from "./Report";
 import { useState } from "react";
 import { deleteProfile } from "./profiles";
 import EditProfile from "./editProfile";
+import ReportMGR from "./ReportMGR";
 
 // BLUE "#1c4690"
 // RED "#E63946"
 
 export default function ProfileMGR() {
-    const [profile, setProfile] = useState();
+    const [profile, setProfile] = useState("");
     const [doThis, setDoThis] = useState("");
     const [edit, setEdit] = useState(false);
- 
+
 
     if(doThis == "Delete") {
         setDoThis("");
@@ -35,13 +35,9 @@ export default function ProfileMGR() {
                     <Button display={true} width={60} color="#1c4690" fontSize={12} text="Edit" onPress={() => setDoThis("Edit")}/>
                 </View>
                 <EditProfile show={edit} callback={()=> setEdit(false)}/>
+            </View>
 
-            </View>
-            <View style={styles.body}>
-                <Text style={styles.header}>Manage Reports</Text>
-                <Report your_name="test" report_name="test"/>
-                
-            </View>
+            <ReportMGR profile={profile}/>
         </>
     );
 }

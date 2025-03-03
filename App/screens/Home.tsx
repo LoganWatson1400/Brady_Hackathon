@@ -2,8 +2,8 @@ import { useState } from "react";
 import Camera from "@/Components/Camera";
 import Form from "@/Components/Form";
 
-import { createProfileTable } from "@/Components/profiles";
-import { createReportTable, deleteReportTable } from "@/Components/reports";
+import { createProfileTable,deleteProfileTable } from "@/Components/profiles";
+import { createReportTable, deleteReportTable, getAllReports } from "@/Components/reports";
 
 const Home = () => {
     const [open, setOpen] = useState(false);
@@ -12,6 +12,9 @@ const Home = () => {
         setOpen(open ? false : true);
     }
     
+
+    //deleteProfileTable()
+    //deleteReportTable()
     // Creates profile table if does not exist.
     createProfileTable();
 
@@ -20,6 +23,7 @@ const Home = () => {
     // <Form open={open} onChange={toggle}/>
     // <Camera open={open}/>
 
+    getAllReports();
 
 
     return (

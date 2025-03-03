@@ -1,11 +1,21 @@
 import { StyleSheet, Text, View } from "react-native";
 import Button from "./Button";
+import { deleteReport } from "./reports";
+import { useState } from "react";
+
 
 export default function Report(
-    props: { your_name: string; report_name: string },
+    props: { your_name: string | undefined, report_name: string | undefined}
 ) {
+    const [show, setShow] = useState(props.report_name == undefined);
+
+    const remove = () => {
+        deleteReport(props.report_name);
+        setShow(true);
+    }
+
     return (
-        <View>
+        <View style={{display: show  ? "none" : "flex"}}>
             <View style={styles.row}>
                 <View style={styles.body}>
                     <Text style={styles.text}>{props.report_name}</Text>
@@ -17,7 +27,7 @@ export default function Report(
                     color="#E63946"
                     fontSize={12}
                     text="Delete"
-                    onPress={undefined}
+                    onPress={remove}
                 />
                 <Button
                     display={true}
