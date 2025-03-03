@@ -22,3 +22,14 @@ export async function deleteReportTable() {
     } catch(e) {console.error("deleteReportTable", e)}
 }
 
+export async function getReports(profile_name, callback) {
+    try {
+        const db = await sql.openDatabaseAsync('storage.db');
+        const selectRows = await db.getAllAsync('SELECT * FROM reports WHERE profile_name = ?', [profile_name]);
+
+        console.log(selectRows);
+        //callback(selectRows);
+
+    } catch (e) { console.error("getReports", e) }
+}
+

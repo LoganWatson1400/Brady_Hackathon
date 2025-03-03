@@ -1,9 +1,20 @@
 import { StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import { mapProfiles } from "./profiles";
+import { useState } from "react";
 
 export default function DropDown(
-    props: { profiles: any[]; value: string, width: number, toggle: any}) {
+    props: { value: string, width: number, setProfile: any}) {
+    
+    const data = [{"value": "New Profile"}];
+    const [profiles, setProfiles] = useState(data);
+    mapProfiles(profiles, setProfiles);
 
+    const [value, setValue] = useState<string>();
+    const toggle = (item: any) => {
+        setValue(item.value);
+        props.setProfile(item.value);
+    };
 
     const styles = StyleSheet.create({
         container: {
@@ -31,7 +42,7 @@ export default function DropDown(
                 placeholderStyle={styles.innerStyle}
                 selectedTextStyle={styles.innerStyle}
                 inputSearchStyle={styles.innerStyle}
-                data={props.profiles}
+                data={profiles}
                 itemContainerStyle={{ borderRadius: 10 }}
                 containerStyle={{ borderRadius: 10, backgroundColor: "white" }}
                 autoScroll
@@ -43,8 +54,8 @@ export default function DropDown(
                 searchField="value"
                 placeholder={"Choose Profile"}
                 searchPlaceholder="Search"
-                value={props.value}
-                onChange={props.toggle}
+                value={value}
+                onChange={toggle}
             />
         </View>
     );

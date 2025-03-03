@@ -47,7 +47,6 @@ export default function Form(props: {open: boolean, onChange: any}) {
       if(newProfile) {
         addProfile(formdata.profile_name, formdata.loc, formdata.desc);
         setValue(formdata.profile_name);
-      
       }
     }
 

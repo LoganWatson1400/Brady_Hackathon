@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function Button(props: {width: number, color: string, fontSize: number, text: string, onPress: any}) {
+export default function Button(props: {display: boolean, width: number, color: string, fontSize: number, text: string, onPress: any}) {
 
     const styles = StyleSheet.create({
         button: {
@@ -9,7 +9,7 @@ export default function Button(props: {width: number, color: string, fontSize: n
             borderWidth: 1,
             borderColor: "gray",
             marginHorizontal: 5,
-            marginTop: 4,
+            margin: 5,
             backgroundColor: props.color,
             width: props.width,
             height: 40,
@@ -18,6 +18,7 @@ export default function Button(props: {width: number, color: string, fontSize: n
 
         buttonContainer: {
             justifyContent: "flex-start",
+            display: props.display ? "flex" : "none",
         },
 
         text: {

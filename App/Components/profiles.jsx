@@ -37,6 +37,7 @@ export async function deleteProfile(profile_name) {
     try {
         const db = await sql.openDatabaseAsync('storage.db');
         await db.runAsync('DELETE FROM profiles WHERE profile_name = $value', { $value: profile_name });
+
     } catch(e) {console.error("deleteProfile", e)}
 }
 
@@ -69,5 +70,12 @@ function compare(arr1, arr2) {
     arr1.sort();
     arr2.sort();
     return JSON.stringify(arr1) === JSON.stringify(arr2);
+}
+
+export async function editProfile(profile_name, loc, desc) {
+    try {
+    const db = await sql.openDatabaseAsync('storage.db');
+    await db.runAsync('UPDATE profiles SET loc = ?, desc = ? WHERE profile_name = ?', [loc, desc, profile_name]);
+    } catch (e) { console.error("editProfile", e) }
 }
 

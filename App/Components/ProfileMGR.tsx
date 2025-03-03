@@ -1,28 +1,45 @@
 import { StyleSheet, Text, View } from "react-native";
 import DropDown from "./dropdown";
 import Button from "./Button";
+import Report from "./Report";
+import { useState } from "react";
+import { deleteProfile } from "./profiles";
+import EditProfile from "./editProfile";
 
 // BLUE "#1c4690"
 // RED "#E63946"
 
 export default function ProfileMGR() {
+    const [profile, setProfile] = useState();
+    const [doThis, setDoThis] = useState("");
+    const [edit, setEdit] = useState(false);
+ 
+
+    if(doThis == "Delete") {
+        setDoThis("");
+        deleteProfile(profile);
+    }
+
+    if(doThis == "Edit") {
+        setDoThis("");
+        setEdit(true);
+    }
+
     return (
         <>
             <View style={styles.body}>
                 <Text style={styles.header}>Manage Profiles</Text>
                 <View style={styles.row}>
-                    <DropDown profiles={[]} value={""} width={145} toggle={undefined} />
-                    <Button width={110} color="#E63946" fontSize={12} text="Delete Profile" onPress={undefined}/>
-                    <Button width={90} color="#1c4690" fontSize={12} text="Edit Profile" onPress={undefined}/>
+                    <DropDown value={""} width={225} setProfile={setProfile} />
+                    <Button display={true} width={60} color="#E63946" fontSize={12} text="Delete" onPress={() => setDoThis("Delete")}/>
+                    <Button display={true} width={60} color="#1c4690" fontSize={12} text="Edit" onPress={() => setDoThis("Edit")}/>
                 </View>
+                <EditProfile show={edit} callback={()=> setEdit(false)}/>
+
             </View>
             <View style={styles.body}>
                 <Text style={styles.header}>Manage Reports</Text>
-                <View style={styles.row}>
-                    
-                    <Button width={100} color="#E63946" fontSize={12} text="Delete Report" onPress={undefined}/>
-                    <Button width={90} color="#1c4690" fontSize={12} text="View Profile" onPress={undefined}/>
-                </View>
+                <Report your_name="test" report_name="test"/>
                 
             </View>
         </>
