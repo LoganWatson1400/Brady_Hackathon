@@ -11,6 +11,7 @@ import {
 import { Dropdown } from "react-native-element-dropdown";
 
 import { addProfile, mapProfiles } from "./profiles";
+import { addReport } from "./reports";
 
 // RED : '#E63946'
 
@@ -51,11 +52,13 @@ export default function Form(props: {open: boolean, onChange: any}) {
     }
 
     // Later add report tables.
-    else {/* profile_name, your_name, report_name */}
+    else {
+      if(!newProfile) formdata.profile_name = value;
+      addReport(formdata.profile_name, formdata.person_name, formdata.report_name)
+      reset();
+    }
 
     setNewProfile(false);
-
-    //reset();
 
     props.onChange();
   };

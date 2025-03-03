@@ -3,6 +3,7 @@ import Camera from "@/Components/Camera";
 import Form from "@/Components/Form";
 
 import { createProfileTable } from "@/Components/profiles";
+import { createReportTable, deleteReportTable } from "@/Components/reports";
 
 const Home = () => {
     const [open, setOpen] = useState(false);
@@ -13,6 +14,9 @@ const Home = () => {
     
     // Creates profile table if does not exist.
     createProfileTable();
+
+    // Creates report table if does not exist.
+    createReportTable();
     // <Form open={open} onChange={toggle}/>
     // <Camera open={open}/>
 
