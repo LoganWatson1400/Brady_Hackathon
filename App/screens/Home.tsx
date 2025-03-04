@@ -1,30 +1,46 @@
-//import { useState } from "react";
-import React from 'react'
-import Camera from "@/components/Camera";
-import Form from "@/components/Form";
-import { createTable, getRows } from "@/components/database";
+import { useState } from "react";
+import Camera from "@/Components/Camera";
+import Form from "@/Components/Form";
+
+import Button from "@/Components/Button";
+import Analyzer from "@/Components/Analyzer";
+import { createProfileTable, deleteProfileTable } from "@/Components/profiles";
+import {
+    createReportTable,
+    deleteReportTable,
+    getAllReports,
+} from "@/Components/reports";
 
 const Home = () => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
+    const toggle = () => {
+        setOpen(open ? false : true);
+    };
 
-    //<Image
-    //       style={{width: 35, height: 35, tintColor: "rgba(28,70,144,1)"}}
-    //       source={require('../assets/images/Camera-icon.png')}
-    //       placeholder="hey"/>
-    
-    
+    //deleteProfileTable()
+    //deleteReportTable()
 
-    createTable("Profiles");
-    getRows("Profiles");
+    // Creates profile table if does not exist.
+    createProfileTable();
+
+    // Creates report table if does not exist.
+    createReportTable();
+    // <Form open={open} onChange={toggle}/>
+    // <Camera open={open}/>
+
     return (
         <>
-            <Camera open={open} onChange={()=> {setOpen(false)}}/>
-
-            <Form open={open} onChange={()=> {setOpen(true)}}/>
-        
+            <Button
+                display={true}
+                width={60}
+                color="#1c4690"
+                fontSize={12}
+                text="View"
+                onPress={Analyzer}
+            />
         </>
     );
-}
+};
 
 export default Home;

@@ -1,11 +1,13 @@
 
 import React from 'react';
 import { View, Text } from 'react-native';
+import ProfileMGR from '@/Components/ProfileMGR';
+
 
 const Settings = () =>{
     return (
         <View>
-            <Text> Welcome to settings</Text>
+            <ProfileMGR/>
         </View>
     );
 };
