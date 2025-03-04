@@ -1,23 +1,26 @@
-
 import { useState } from "react";
 import Camera from "@/Components/Camera";
 import Form from "@/Components/Form";
 
-import { createProfileTable,deleteProfileTable } from "@/Components/profiles";
-import { createReportTable, deleteReportTable, getAllReports } from "@/Components/reports";
-
+import Button from "@/Components/Button";
+import Analyzer from "@/Components/Analyzer";
+import { createProfileTable, deleteProfileTable } from "@/Components/profiles";
+import {
+    createReportTable,
+    deleteReportTable,
+    getAllReports,
+} from "@/Components/reports";
 
 const Home = () => {
     const [open, setOpen] = useState(false);
 
     const toggle = () => {
         setOpen(open ? false : true);
-    }
-    
+    };
 
     //deleteProfileTable()
     //deleteReportTable()
-    
+
     // Creates profile table if does not exist.
     createProfileTable();
 
@@ -26,13 +29,18 @@ const Home = () => {
     // <Form open={open} onChange={toggle}/>
     // <Camera open={open}/>
 
-
     return (
         <>
-            <Form open={open} onChange={toggle}/>
-            <Camera open={open}/>
+            <Button
+                display={true}
+                width={60}
+                color="#1c4690"
+                fontSize={12}
+                text="View"
+                onPress={Analyzer}
+            />
         </>
     );
-}
+};
 
 export default Home;
