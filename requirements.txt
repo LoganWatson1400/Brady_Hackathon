@@ -1,9 +1,10 @@
-#Python Version 3.13
+#Python Version 3.6.8
 matplotlib
 numpy
 pytz
 plotly
 pandas
 tensorflow
+tensorflowjs
 scikit-learn
 opencv-python # for data augmentation
