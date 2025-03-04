@@ -19,6 +19,6 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "src/**/*",
-    "declarations.d.ts"
+    "declare.d.ts"
   ]
 }
