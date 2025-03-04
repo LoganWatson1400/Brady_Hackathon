@@ -66,28 +66,40 @@ const images = [
 ];
 
 const Review = () => {
-  const imageElements = [];
-
-  // a for loop to add images but i had to do it manually coz expo does not support require.
-  for (let i = 0; i < images.length; i++) {
-    imageElements.push(
-      <Image
-        key={i}
-        source={images[i]}
-        style={{ width: 300, height: 200, margin: 10, borderRadius: 10 }}
-        resizeMode="cover"
-      />
-    );
-  }
+  const imageElements = images.map((image, i) => (
+    <Image
+      key={i}
+      source={image}
+      style={styles.image}
+      resizeMode="cover"
+    />
+  ));
 
   return (
     <ScrollView>
-      <View style={{ alignItems: 'center', marginTop: 20 }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Welcome to Review</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>Welcome to Review</Text>
         {imageElements}
       </View>
     </ScrollView>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  image: {
+    width: 300,
+    height: 200,
+    margin: 10,
+    borderRadius: 10,
+  },
+});
 export default Review;
