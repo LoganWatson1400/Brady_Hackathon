@@ -8,7 +8,7 @@ import { createReportTable, deleteReportTable, getAllReports } from "@/Component
 
 
 const Home = () => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const toggle = () => {
         setOpen(open ? false : true);
