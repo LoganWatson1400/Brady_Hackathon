@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, Image, ActivityIndicator, StyleSheet, Pre
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import Output from './Output';
 
+import { predictFromImage, loadModel } from '@/components/modelScript'
+
 export default function Camera(props: {open: boolean}) {
     const [permission, requestPermission] = useCameraPermissions();
     const [photo, setPhoto] = useState<string | null>(null);

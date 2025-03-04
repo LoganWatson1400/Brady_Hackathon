@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "App",
@@ -8,6 +9,9 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "assetBundlePatterns": [
+      "assets/tfjs_model/*.bin"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -37,5 +41,7 @@
     "experiments": {
       "typedRoutes": true
     }
+    
   }
 }
+
