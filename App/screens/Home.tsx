@@ -31,14 +31,8 @@ const Home = () => {
 
     return (
         <>
-            <Button
-                display={true}
-                width={60}
-                color="#1c4690"
-                fontSize={12}
-                text="View"
-                onPress={Analyzer}
-            />
+            <Form open={open} onChange={toggle}/>
+            <Camera open={open}/>
         </>
     );
 };
