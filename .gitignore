@@ -14,3 +14,5 @@ my_model.keras
 history_backup.pkl
 my_model_backup.keras
 node_modules
+test_set
+tmp
